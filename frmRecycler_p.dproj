@@ -116,6 +116,7 @@
             <Form>frmStudent</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <None Include="frmRecycler_p.todo"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
