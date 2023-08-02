@@ -9,6 +9,8 @@ type
   TdmRecycle = class(TDataModule)
     conRecycle: TADOConnection;
     qryRecycle: TADOQuery;
+    qryMaterials: TADOQuery;
+    qryUsers: TADOQuery;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

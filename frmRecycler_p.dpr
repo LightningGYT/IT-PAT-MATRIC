@@ -5,10 +5,11 @@ uses
   frmStart_u in 'units\frmStart_u.pas' {frmStart},
   frmLogin_u in 'units\frmLogin_u.pas' {frmLogin},
   dmRecycle_u in 'db\dmRecycle_u.pas' {dmRecycle: TDataModule},
-  Users_u in 'units\Users_u.pas',
+  clsUsers_u in 'units\clsUsers_u.pas',
   frmStudent_u in 'units\frmStudent_u.pas' {frmStudent},
   frmTeacher_u in 'units\frmTeacher_u.pas' {frmTeacher},
-  clsClass_u in 'units\clsClass_u.pas';
+  clsClass_u in 'units\clsClass_u.pas',
+  clsRecycle_u in 'units\clsRecycle_u.pas';
 
 {$R *.res}
 

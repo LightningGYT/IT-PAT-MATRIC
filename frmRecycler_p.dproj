@@ -111,7 +111,7 @@
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="units\Users_u.pas"/>
+        <DCCReference Include="units\clsUsers_u.pas"/>
         <DCCReference Include="units\frmStudent_u.pas">
             <Form>frmStudent</Form>
             <FormType>dfm</FormType>
@@ -121,6 +121,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="units\clsClass_u.pas"/>
+        <DCCReference Include="units\clsRecycle_u.pas"/>
         <None Include="frmRecycler_p.todo"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

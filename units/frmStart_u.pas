@@ -7,21 +7,26 @@ uses
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, Vcl.StdCtrls,
   Vcl.ComCtrls, VclTee.TeEngine, VclTee.Series, VclTee.TeeProcs, VclTee.Chart,
-  Vcl.ExtCtrls, Vcl.Buttons;
+  Vcl.ExtCtrls, Vcl.Buttons, clsRecycle_u, Generics.Collections, System.Actions,
+  Vcl.ActnList;
 
 type
   TfrmStart = class(TForm)
     pnlStats: TPanel;
     cStats: TChart;
-    Series2: TPieSeries;
+    sRecycled: TPieSeries;
     pnlLogin: TPanel;
     redLeaderBoard: TRichEdit;
     bbnClose: TBitBtn;
     bbnLogin: TBitBtn;
     lblWelcom: TLabel;
-    Button1: TButton;
+    DEBUGINGREMOVE: TActionList;
+    Student: TAction;
+    Teacher: TAction;
     procedure bbnLoginClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure StudentExecute(Sender: TObject);
+    procedure TeacherExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -30,21 +35,45 @@ type
 
 var
   frmStart: TfrmStart;
+  objRecycle: TRecycler;
 
 implementation
 
 {$R *.dfm}
 
-uses frmLogin_u, dmRecycle_u, frmTeacher_u;
+uses frmLogin_u, dmRecycle_u, frmTeacher_u, frmStudent_u;
+
+procedure TfrmStart.StudentExecute(Sender: TObject);
+begin
+frmStudent.ShowModal;
+end;
+
+procedure TfrmStart.TeacherExecute(Sender: TObject);
+begin
+frmTeacher.ShowModal;
+end;
 
 procedure TfrmStart.bbnLoginClick(Sender: TObject);
 begin
   frmLogin.ShowModal;
 end;
 
-procedure TfrmStart.Button1Click(Sender: TObject);
+procedure TfrmStart.FormShow(Sender: TObject);
+var
+  Materials: TDictionary<String, TMaterial>;
+  key: String;
 begin
-frmTeacher.ShowModal;
+  objRecycle := TRecycler.Create;
+  Materials := objRecycle.GetMaterials;
+
+  with sRecycled do
+  begin
+    for key in Materials.Keys do
+    begin
+      Add(Materials.Items[Key].fWieght, key);
+    end;
+  end;
+
 end;
 
 end.

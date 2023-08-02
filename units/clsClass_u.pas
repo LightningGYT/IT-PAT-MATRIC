@@ -11,4 +11,11 @@ type
 
 implementation
 
+{ TClass }
+
+constructor TClass.Create;
+begin
+//
+end;
+
 end.

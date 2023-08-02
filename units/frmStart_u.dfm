@@ -3,43 +3,35 @@ object frmStart: TfrmStart
   Top = 0
   AutoSize = True
   Caption = 'Recycler'
-  ClientHeight = 554
-  ClientWidth = 765
+  ClientHeight = 445
+  ClientWidth = 612
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
-  Font.Height = -19
+  Font.Height = -15
   Font.Name = 'Consolas'
   Font.Style = []
   Position = poDesigned
-  PixelsPerInch = 120
-  TextHeight = 22
+  OnShow = FormShow
+  TextHeight = 18
   object pnlStats: TPanel
     AlignWithMargins = True
-    Left = 4
-    Top = 4
-    Width = 461
-    Height = 546
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Left = 3
+    Top = 3
+    Width = 369
+    Height = 439
     Align = alLeft
-    Padding.Left = 4
-    Padding.Top = 4
-    Padding.Right = 4
-    Padding.Bottom = 4
+    Padding.Left = 3
+    Padding.Top = 3
+    Padding.Right = 3
+    Padding.Bottom = 3
     TabOrder = 0
     object cStats: TChart
       AlignWithMargins = True
-      Left = 9
-      Top = 9
-      Width = 443
-      Height = 272
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 7
+      Top = 7
+      Width = 355
+      Height = 218
       Title.Text.Strings = (
         'Recycled Items')
       View3D = False
@@ -56,7 +48,7 @@ object frmStart: TfrmStart
         15
         16)
       ColorPaletteIndex = 13
-      object Series2: TPieSeries
+      object sRecycled: TPieSeries
         HoverElement = []
         Marks.Tail.Margin = 2
         Title = 'Recyled Items'
@@ -82,21 +74,19 @@ object frmStart: TfrmStart
         OtherSlice.Legend.Visible = False
         UsePatterns = True
         Data = {0000000000}
+        Detail = {0000000000}
       end
     end
     object redLeaderBoard: TRichEdit
       AlignWithMargins = True
-      Left = 9
-      Top = 289
-      Width = 443
-      Height = 242
+      Left = 7
+      Top = 231
+      Width = 355
+      Height = 194
       Cursor = crArrow
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
       Align = alTop
       Alignment = taCenter
+      Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
@@ -109,54 +99,48 @@ object frmStart: TfrmStart
   end
   object pnlLogin: TPanel
     AlignWithMargins = True
-    Left = 473
-    Top = 4
-    Width = 288
-    Height = 546
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Left = 378
+    Top = 3
+    Width = 231
+    Height = 439
     Align = alLeft
-    Padding.Left = 4
-    Padding.Top = 4
-    Padding.Right = 4
-    Padding.Bottom = 4
+    Padding.Left = 3
+    Padding.Top = 3
+    Padding.Right = 3
+    Padding.Bottom = 3
     TabOrder = 1
     object lblWelcom: TLabel
       AlignWithMargins = True
-      Left = 18
-      Top = 43
-      Width = 252
-      Height = 40
-      Margins.Left = 13
-      Margins.Top = 38
-      Margins.Right = 13
-      Margins.Bottom = 13
+      Left = 14
+      Top = 34
+      Width = 203
+      Height = 32
+      Margins.Left = 10
+      Margins.Top = 30
+      Margins.Right = 10
+      Margins.Bottom = 10
       Align = alTop
       Alignment = taCenter
       Caption = 'Welcome'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -34
+      Font.Height = -27
       Font.Name = 'Consolas'
       Font.Style = []
       ParentFont = False
-      ExplicitLeft = 9
-      ExplicitTop = 63
+      ExplicitWidth = 105
     end
     object bbnClose: TBitBtn
       AlignWithMargins = True
-      Left = 18
-      Top = 481
-      Width = 252
-      Height = 47
+      Left = 14
+      Top = 388
+      Width = 203
+      Height = 37
       Cursor = crHandPoint
       Hint = 'Close the app'
-      Margins.Left = 13
-      Margins.Top = 4
-      Margins.Right = 13
-      Margins.Bottom = 13
+      Margins.Left = 10
+      Margins.Right = 10
+      Margins.Bottom = 10
       Align = alBottom
       Kind = bkClose
       NumGlyphs = 2
@@ -166,16 +150,16 @@ object frmStart: TfrmStart
     end
     object bbnLogin: TBitBtn
       AlignWithMargins = True
-      Left = 18
-      Top = 418
-      Width = 252
-      Height = 46
+      Left = 14
+      Top = 338
+      Width = 203
+      Height = 37
       Cursor = crHandPoint
       Hint = 'Login'
-      Margins.Left = 13
-      Margins.Top = 13
-      Margins.Right = 13
-      Margins.Bottom = 13
+      Margins.Left = 10
+      Margins.Top = 10
+      Margins.Right = 10
+      Margins.Bottom = 10
       Align = alBottom
       Caption = '&Login'
       Default = True
@@ -186,18 +170,19 @@ object frmStart: TfrmStart
       TabOrder = 1
       OnClick = bbnLoginClick
     end
-    object Button1: TButton
-      Left = 50
-      Top = 230
-      Width = 94
-      Height = 31
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Caption = 'Button1'
-      TabOrder = 2
-      OnClick = Button1Click
+  end
+  object DEBUGINGREMOVE: TActionList
+    Left = 442
+    Top = 115
+    object Student: TAction
+      Caption = 'Student'
+      ShortCut = 49235
+      OnExecute = StudentExecute
+    end
+    object Teacher: TAction
+      Caption = 'Teacher'
+      ShortCut = 49236
+      OnExecute = TeacherExecute
     end
   end
 end
