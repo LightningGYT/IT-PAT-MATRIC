@@ -116,6 +116,11 @@
             <Form>frmStudent</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="units\frmTeacher_u.pas">
+            <Form>frmTeacher</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="units\clsClass_u.pas"/>
         <None Include="frmRecycler_p.todo"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

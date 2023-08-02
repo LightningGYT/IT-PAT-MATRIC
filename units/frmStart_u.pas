@@ -19,7 +19,9 @@ type
     bbnClose: TBitBtn;
     bbnLogin: TBitBtn;
     lblWelcom: TLabel;
+    Button1: TButton;
     procedure bbnLoginClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -33,11 +35,16 @@ implementation
 
 {$R *.dfm}
 
-uses frmLogin_u, dmRecycle_u;
+uses frmLogin_u, dmRecycle_u, frmTeacher_u;
 
 procedure TfrmStart.bbnLoginClick(Sender: TObject);
 begin
   frmLogin.ShowModal;
+end;
+
+procedure TfrmStart.Button1Click(Sender: TObject);
+begin
+frmTeacher.ShowModal;
 end;
 
 end.

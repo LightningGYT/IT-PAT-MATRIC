@@ -2,6 +2,8 @@ unit Users_u;
 
 interface
 
+uses Hash, SysUtils;
+
 type
   TUser = record
     LoginID: String;
@@ -16,6 +18,14 @@ type
         (Admin: boolean);
   end;
 
+  TStudent = class
+  private
+    fUserData: TUser;
+  public
+    constructor Create(uUser: TUser);
+    function FindClass: String;
+  end;
+
 procedure Login(sUsername, sPassword: String);
 function PrepPassword(sPassword, sSalt: String): String;
 
@@ -28,9 +38,10 @@ var
   sPrep: String;
 begin
   sPrep := sSalt + sPassword + sSalt;
-  // ToDo ...
 
-  Result := sPassword;
+  sPrep := THashSHA2.GetHashString(sPrep);
+
+  Result := sPrep;
 end;
 
 procedure Login(sUsername, sPassword: String);
@@ -84,7 +95,7 @@ begin
 
     if RecordCount <> 0 then
     begin
-       // ToDo...
+      // ToDo...
       EXIT;
     end;
 
@@ -96,6 +107,54 @@ begin
 
     ExecSQL;
     Active := True;
+
+  end;
+
+end;
+
+{ TStudent }
+
+constructor TStudent.Create(uUser: TUser);
+begin
+
+  if uUser.Teacher then
+  begin
+    raise Exception.Create('Not Student');
+  end;
+
+  fUserData := uUser;
+
+end;
+
+function TStudent.FindClass: String;
+var
+  sClassID: String;
+begin
+
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text := 'SELECT * FROM ClassList WHERE Student_ID =:ID';
+    Parameters.ParamByName('ID').Value := fUserData.ID;
+
+    ExecSQL;
+    Active := True;
+
+    sClassID := FieldByName('Class_Id').AsString;
+
+
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text := 'SELECT * FROM Class WHERE ID =:ID';
+    Parameters.ParamByName('ID').Value := sClassID;
+
+    ExecSQL;
+    Active := True;
+
+
 
   end;
 
