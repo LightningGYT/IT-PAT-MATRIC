@@ -12,6 +12,7 @@ object frmStudent: TfrmStudent
   Font.Name = 'Consolas'
   Font.Style = []
   Position = poDesigned
+  OnShow = FormShow
   TextHeight = 18
   object pnlStats: TPanel
     AlignWithMargins = True
@@ -30,28 +31,40 @@ object frmStudent: TfrmStudent
       Title.Text.Strings = (
         'Recycle History')
       View3D = False
+      View3DOptions.Elevation = 315
+      View3DOptions.Orthogonal = False
+      View3DOptions.Perspective = 0
+      View3DOptions.Rotation = 360
       Align = alTop
       TabOrder = 0
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 13
-      object Button1: TButton
-        Left = 160
-        Top = 104
-        Width = 75
-        Height = 25
-        Caption = 'Button1'
-        TabOrder = 0
-      end
-      object Series1: TLineSeries
-        HoverElement = [heCurrent]
-        Title = 'RecycleHistory'
-        Brush.BackColor = clDefault
-        Pointer.InflateMargins = True
-        Pointer.Style = psRectangle
-        XValues.Name = 'X'
+      object sRecycled: TPieSeries
+        HoverElement = []
+        Marks.Tail.Margin = 2
         XValues.Order = loAscending
-        YValues.Name = 'Y'
+        YValues.Name = 'Pie'
         YValues.Order = loNone
+        Frame.InnerBrush.BackColor = clRed
+        Frame.InnerBrush.Gradient.EndColor = clGray
+        Frame.InnerBrush.Gradient.MidColor = clWhite
+        Frame.InnerBrush.Gradient.StartColor = 4210752
+        Frame.InnerBrush.Gradient.Visible = True
+        Frame.MiddleBrush.BackColor = clYellow
+        Frame.MiddleBrush.Gradient.EndColor = 8553090
+        Frame.MiddleBrush.Gradient.MidColor = clWhite
+        Frame.MiddleBrush.Gradient.StartColor = clGray
+        Frame.MiddleBrush.Gradient.Visible = True
+        Frame.OuterBrush.BackColor = clGreen
+        Frame.OuterBrush.Gradient.EndColor = 4210752
+        Frame.OuterBrush.Gradient.MidColor = clWhite
+        Frame.OuterBrush.Gradient.StartColor = clSilver
+        Frame.OuterBrush.Gradient.Visible = True
+        Frame.Width = 4
+        OtherSlice.Legend.Visible = False
+        UsePatterns = True
+        Data = {0000000000}
+        Detail = {0000000000}
       end
     end
     object redRecycleSummary: TRichEdit

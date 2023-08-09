@@ -63,11 +63,14 @@ var
   Materials: TDictionary<String, TMaterial>;
   key: String;
 begin
+
+  // Adding The MAterial counts to the graph
   objRecycle := TRecycler.Create;
   Materials := objRecycle.GetMaterials;
 
   with sRecycled do
   begin
+    Clear;
     for key in Materials.Keys do
     begin
       Add(Materials.Items[Key].fWieght, key);
