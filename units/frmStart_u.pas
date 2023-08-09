@@ -45,12 +45,12 @@ uses frmLogin_u, dmRecycle_u, frmTeacher_u, frmStudent_u;
 
 procedure TfrmStart.StudentExecute(Sender: TObject);
 begin
-frmStudent.ShowModal;
+  frmStudent.ShowModal;
 end;
 
 procedure TfrmStart.TeacherExecute(Sender: TObject);
 begin
-frmTeacher.ShowModal;
+  frmTeacher.ShowModal;
 end;
 
 procedure TfrmStart.bbnLoginClick(Sender: TObject);
@@ -73,7 +73,7 @@ begin
     Clear;
     for key in Materials.Keys do
     begin
-      Add(Materials.Items[Key].fWieght, key);
+      Add(Materials.Items[key].fWieght, key);
     end;
   end;
 

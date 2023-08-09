@@ -7,7 +7,8 @@ uses
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, VclTee.TeeGDIPlus,
   Vcl.StdCtrls, Vcl.Buttons, VclTee.TeEngine, VclTee.TeeProcs, VclTee.Chart,
-  Vcl.ComCtrls, VclTee.Series, clsRecycle_u, dmRecycle_u, Generics.Collections;
+  Vcl.ComCtrls, VclTee.Series, clsRecycle_u, dmRecycle_u, Generics.Collections,
+  clsUsers_u;
 
 type
   TfrmStudent = class(TForm)
@@ -22,9 +23,9 @@ type
     procedure bbnLogoutClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
-    { Private declarations }
+    objStudent: TStudent;
   public
-    { Public declarations }
+    procedure SetStudent(Student: TStudent);
   end;
 
 var
@@ -48,7 +49,7 @@ var
 begin
 
   // Adding The MAterial counts to the graph
-  Materials := objRecycle.GetByStudent('d1cf1ac3-0a46-4b85-8e67-0f727b42faa4');
+  Materials := objRecycle.GetByStudent(objStudent.GetID);
 
   with sRecycled do
   begin
@@ -59,6 +60,18 @@ begin
     end;
   end;
 
+  // Show Details about Student
+  with redStudentSumary.Lines do
+  begin
+    Clear;
+    Add(objStudent.toString)
+  end;
+
+end;
+
+procedure TfrmStudent.SetStudent(Student: TStudent);
+begin
+  objStudent := Student;
 end;
 
 end.

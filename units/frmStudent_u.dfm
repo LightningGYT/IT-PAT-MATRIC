@@ -29,7 +29,7 @@ object frmStudent: TfrmStudent
       Width = 398
       Height = 237
       Title.Text.Strings = (
-        'Recycle History')
+        'Recycled')
       View3D = False
       View3DOptions.Elevation = 315
       View3DOptions.Orthogonal = False

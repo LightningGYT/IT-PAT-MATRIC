@@ -24,6 +24,10 @@ type
   public
     constructor Create(uUser: TUser);
     function FindClass: String;
+    function GetID: String;
+    function GetName: String;
+    function GetSurname: String;
+    function toString: String;
   end;
 
 procedure Login(sUsername, sPassword: String);
@@ -144,7 +148,6 @@ begin
 
     sClassID := FieldByName('Class_Id').AsString;
 
-
     Active := False;
     SQL.Clear;
 
@@ -154,10 +157,29 @@ begin
     ExecSQL;
     Active := True;
 
-
-
   end;
 
+end;
+
+function TStudent.GetID: String;
+begin
+  Result := fUserData.ID;
+end;
+
+function TStudent.GetName: String;
+begin
+  Result := fUserData.Name;
+end;
+
+function TStudent.GetSurname: String;
+begin
+  Result := fUserData.Surname;
+end;
+
+function TStudent.toString: String;
+begin
+  Result := 'Name: ' + GetName + #13 + 'Surname: ' + GetSurname + #13 + #13 +
+    'Grade: ' +'';
 end;
 
 end.
