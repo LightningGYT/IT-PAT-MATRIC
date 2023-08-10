@@ -7,7 +7,8 @@ uses
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, System.ImageList,
   Vcl.ImgList, Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.VirtualImage,
-  Vcl.VirtualImageList, Skia.Vcl, Vcl.StdCtrls, Vcl.Buttons, StrUtils;
+  Vcl.VirtualImageList, Skia.Vcl, Vcl.StdCtrls, Vcl.Buttons, StrUtils,
+  clsUsers_u;
 
 type
   TfrmLogin = class(TForm)
@@ -19,9 +20,10 @@ type
     edtPassword: TEdit;
     edtUsername: TEdit;
     procedure bbnLoginClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure cbxPassVissClick(Sender: TObject);
   private
     function CheckInputs: boolean;
-    procedure Login(cType: Char);
   public
     { Public declarations }
   end;
@@ -40,11 +42,51 @@ uses frmStart_u;
 { TfrmLogin }
 
 procedure TfrmLogin.bbnLoginClick(Sender: TObject);
+var
+  sUsername, sPassword: String;
+  objUser: TUser;
 begin
 
   if not CheckInputs then
   begin
     EXIT;
+  end;
+
+  sUsername := edtUsername.Text;
+  sPassword := edtPassword.Text;
+
+  try
+    objUser := Login(sUsername, sPassword);
+  Except
+    EXIT;
+  end;
+
+  if objUser.Teacher then
+  begin
+    //
+  end
+  else
+  begin
+    Close;
+    frmStart.LoginStudent(objUser);
+  end;
+
+end;
+
+procedure TfrmLogin.cbxPassVissClick(Sender: TObject);
+var
+  bShow: boolean;
+begin
+
+  bShow := cbxPassViss.Checked;
+
+  if bShow then
+  begin
+    edtPassword.PasswordChar := #0;
+  end
+  else
+  begin
+    edtPassword.PasswordChar := '*';
   end;
 
 end;
@@ -60,17 +102,14 @@ begin
 
   if (sUsername <> '') OR (sPassword <> '') then
   begin
-    Result := False;
-    EXIT;
+    Result := True;
   end;
-
 
   for I in sUsername do
   begin
     if ContainsText(ForbiddenChars, I) then
     begin
       Result := False;
-      EXIT;
     end;
 
   end;
@@ -80,7 +119,6 @@ begin
     if ContainsText(ForbiddenChars, I) then
     begin
       Result := False;
-      EXIT;
     end;
   end;
 
@@ -88,9 +126,11 @@ begin
 
 end;
 
-procedure TfrmLogin.Login(cType: Char);
+procedure TfrmLogin.FormShow(Sender: TObject);
 begin
-
+  edtPassword.Clear;
+  edtUsername.Clear;
+  edtUsername.SetFocus;
 end;
 
 end.

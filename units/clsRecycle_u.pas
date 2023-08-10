@@ -14,7 +14,9 @@ type
   TRecycler = class
   private
     fMaterials: TDictionary<String, TMaterial>;
+    fHistory: TDictionary<String, integer>;
     procedure CalcMaterials;
+    procedure CalcHistory;
   public
     constructor Create;
     function GetMaterials: TDictionary<String, TMaterial>;
@@ -27,6 +29,26 @@ implementation
 
 uses dmRecycle_u;
 
+// Calculates the amounts recycled for that year by month
+procedure TRecycler.CalcHistory;
+var
+  wToday: word;
+begin
+  fHistory := TDictionary<String, integer>.Create;
+  wToday := CurrentYear;
+
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text := 'SELECT SUM(Weight) as tot FROM Recycle '
+
+  end;
+
+end;
+
+// Get The total amounts of each material Recycled
 procedure TRecycler.CalcMaterials;
 var
   objMaterial: TMaterial;
@@ -81,6 +103,7 @@ end;
 constructor TRecycler.Create;
 begin
   CalcMaterials;
+  CalcHistory;
 end;
 
 function TRecycler.GetByStudent(sID: String): TDictionary<String, TMaterial>;
@@ -111,7 +134,8 @@ begin
         SQL.Clear;
 
         SQL.ADd('SELECT * FROM Recycle WHERE (Material_ID = ' +
-          QuotedStr(objMaterial.fID) +') AND (Student_ID = '+ QuotedStr(sID) + ')');
+          QuotedStr(objMaterial.fID) + ') AND (Student_ID = ' +
+          QuotedStr(sID) + ')');
 
         Active := True;
 

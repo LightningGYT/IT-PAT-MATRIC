@@ -8,7 +8,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, Vcl.StdCtrls,
   Vcl.ComCtrls, VclTee.TeEngine, VclTee.Series, VclTee.TeeProcs, VclTee.Chart,
   Vcl.ExtCtrls, Vcl.Buttons, clsRecycle_u, Generics.Collections, System.Actions,
-  Vcl.ActnList;
+  Vcl.ActnList, clsUsers_u;
 
 type
   TfrmStart = class(TForm)
@@ -30,7 +30,7 @@ type
   private
     { Private declarations }
   public
-    { Public declarations }
+    procedure LoginStudent(uUser: TUser);
   end;
 
 var
@@ -76,6 +76,18 @@ begin
       Add(Materials.Items[key].fWieght, key);
     end;
   end;
+
+end;
+
+procedure TfrmStart.LoginStudent(uUser: TUser);
+var
+  objStudent: TStudent;
+begin
+
+  objStudent := TStudent.Create(uUser);
+  frmStudent.SetStudent(objStudent);
+  Hide;
+  frmStudent.Show;
 
 end;
 

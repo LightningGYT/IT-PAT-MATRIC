@@ -22,6 +22,7 @@ type
     sRecycled: TPieSeries;
     procedure bbnLogoutClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     objStudent: TStudent;
   public
@@ -42,12 +43,16 @@ begin
   Close;
 end;
 
+procedure TfrmStudent.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  frmStart.Show;
+end;
+
 procedure TfrmStudent.FormShow(Sender: TObject);
 var
   Materials: TDictionary<String, TMaterial>;
   key: String;
 begin
-
   // Adding The MAterial counts to the graph
   Materials := objRecycle.GetByStudent(objStudent.GetID);
 

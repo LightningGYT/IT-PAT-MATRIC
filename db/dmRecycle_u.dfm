@@ -1,31 +1,26 @@
 object dmRecycle: TdmRecycle
   OnCreate = DataModuleCreate
-  Height = 480
-  Width = 640
+  Height = 600
+  Width = 800
+  PixelsPerInch = 120
   object conRecycle: TADOConnection
     ConnectionString = 
       'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=.\data\Recycler.mdb' +
       ';Mode=ReadWrite;Persist Security Info=False'
     Provider = 'Microsoft.Jet.OLEDB.4.0'
-    Left = 104
-    Top = 160
+    Left = 130
+    Top = 200
   end
   object qryRecycle: TADOQuery
     Connection = conRecycle
     Parameters = <>
-    Left = 104
-    Top = 240
+    Left = 130
+    Top = 300
   end
   object qryMaterials: TADOQuery
     Connection = conRecycle
     Parameters = <>
-    Left = 112
-    Top = 320
-  end
-  object qryUsers: TADOQuery
-    Connection = conRecycle
-    Parameters = <>
-    Left = 224
-    Top = 240
+    Left = 140
+    Top = 400
   end
 end
