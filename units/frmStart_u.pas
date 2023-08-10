@@ -16,13 +16,14 @@ type
     cStats: TChart;
     sRecycled: TPieSeries;
     pnlLogin: TPanel;
-    redLeaderBoard: TRichEdit;
     bbnClose: TBitBtn;
     bbnLogin: TBitBtn;
     lblWelcom: TLabel;
     DEBUGINGREMOVE: TActionList;
     Student: TAction;
     Teacher: TAction;
+    cHistory: TChart;
+    sHistory: TLineSeries;
     procedure bbnLoginClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure StudentExecute(Sender: TObject);
@@ -36,6 +37,10 @@ type
 var
   frmStart: TfrmStart;
   objRecycle: TRecycler;
+
+const
+  months: array of String = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL',
+    'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
 implementation
 
@@ -61,7 +66,9 @@ end;
 procedure TfrmStart.FormShow(Sender: TObject);
 var
   Materials: TDictionary<String, TMaterial>;
+  History: TDictionary<String, integer>;
   key: String;
+  month: integer;
 begin
 
   // Adding The MAterial counts to the graph
@@ -74,6 +81,18 @@ begin
     for key in Materials.Keys do
     begin
       Add(Materials.Items[key].fWieght, key);
+    end;
+  end;
+
+  // Adding History onto Graph
+  History := objRecycle.GetHistory;
+
+  with sHistory do
+  begin
+    Clear;
+    for month := 0 to 11 do
+    begin
+      Add(History.Items[months[month]], months[month]);
     end;
   end;
 

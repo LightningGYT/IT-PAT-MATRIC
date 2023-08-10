@@ -20,8 +20,13 @@ type
   public
     constructor Create;
     function GetMaterials: TDictionary<String, TMaterial>;
+    function GetHistory: TDictionary<String, integer>;
     function GetByStudent(sID: String): TDictionary<String, TMaterial>;
   end;
+
+const
+  months: array of String = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL',
+    'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
 implementation
 
@@ -42,7 +47,20 @@ begin
     Active := False;
     SQL.Clear;
 
-    SQL.Text := 'SELECT SUM(Weight) as tot FROM Recycle '
+    SQL.Text :=
+      'SELECT SUM(Weight) as tot, MONTH(Recycler_Date) as mon FROM Recycle WHERE (Recycler_Date BETWEEN #'
+      + wToday.ToString + '/01/01# AND #' + wToday.ToString +
+      '/12/31#) GROUP BY MONTH(Recycler_Date)';
+
+    Active := True;
+
+    First;
+    while not EOF do
+    begin
+      fHistory.Add(months[FieldByName('mon').AsInteger - 1],
+        FieldByName('tot').AsInteger);
+      Next;
+    end;
 
   end;
 
@@ -65,7 +83,7 @@ begin
     ExecSQL;
     Active := True;
 
-    while not Eof do
+    while not EOF do
     begin
 
       objMaterial.fID := FieldByName('ID').AsString;
@@ -75,7 +93,7 @@ begin
         Active := False;
         SQL.Clear;
 
-        SQL.ADd('SELECT * FROM Recycle WHERE Material_ID = ' +
+        SQL.Add('SELECT * FROM Recycle WHERE Material_ID = ' +
           QuotedStr(objMaterial.fID));
 
         Active := True;
@@ -83,7 +101,7 @@ begin
         objMaterial.fAmount := RecordCount;
         objMaterial.fWieght := 0;
 
-        while not Eof do
+        while not EOF do
         begin
           objMaterial.fWieght := objMaterial.fWieght + FieldByName('Weight')
             .AsInteger;
@@ -92,7 +110,7 @@ begin
 
       end;
 
-      fMaterials.ADd(FieldByName('Material_Name').AsString, objMaterial);
+      fMaterials.Add(FieldByName('Material_Name').AsString, objMaterial);
 
       Next;
     end;
@@ -123,7 +141,7 @@ begin
     ExecSQL;
     Active := True;
 
-    while not Eof do
+    while not EOF do
     begin
 
       objMaterial.fID := FieldByName('ID').AsString;
@@ -133,7 +151,7 @@ begin
         Active := False;
         SQL.Clear;
 
-        SQL.ADd('SELECT * FROM Recycle WHERE (Material_ID = ' +
+        SQL.Add('SELECT * FROM Recycle WHERE (Material_ID = ' +
           QuotedStr(objMaterial.fID) + ') AND (Student_ID = ' +
           QuotedStr(sID) + ')');
 
@@ -142,7 +160,7 @@ begin
         objMaterial.fAmount := RecordCount;
         objMaterial.fWieght := 0;
 
-        while not Eof do
+        while not EOF do
         begin
           objMaterial.fWieght := objMaterial.fWieght + FieldByName('Weight')
             .AsInteger;
@@ -151,7 +169,7 @@ begin
 
       end;
 
-      Materials.ADd(FieldByName('Material_Name').AsString, objMaterial);
+      Materials.Add(FieldByName('Material_Name').AsString, objMaterial);
 
       Next;
     end;
@@ -161,9 +179,15 @@ begin
   Result := Materials;
 end;
 
+function TRecycler.GetHistory: TDictionary<String, integer>;
+begin
+  Result := fHistory;
+end;
+
 function TRecycler.GetMaterials: TDictionary<String, TMaterial>;
 begin
   Result := fMaterials;
 end;
+
 
 end.

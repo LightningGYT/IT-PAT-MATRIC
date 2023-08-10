@@ -3,8 +3,8 @@ object frmStart: TfrmStart
   Top = 0
   AutoSize = True
   Caption = 'Recycler'
-  ClientHeight = 560
-  ClientWidth = 771
+  ClientHeight = 627
+  ClientWidth = 765
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -20,7 +20,7 @@ object frmStart: TfrmStart
     Left = 4
     Top = 4
     Width = 461
-    Height = 552
+    Height = 619
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -31,6 +31,7 @@ object frmStart: TfrmStart
     Padding.Right = 4
     Padding.Bottom = 4
     TabOrder = 0
+    ExplicitHeight = 552
     object cStats: TChart
       AlignWithMargins = True
       Left = 9
@@ -86,28 +87,46 @@ object frmStart: TfrmStart
         Detail = {0000000000}
       end
     end
-    object redLeaderBoard: TRichEdit
+    object cHistory: TChart
       AlignWithMargins = True
       Left = 9
       Top = 289
       Width = 443
-      Height = 242
-      Cursor = crArrow
+      Height = 312
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
+      AllowPanning = pmNone
+      Legend.Visible = False
+      Title.Text.Strings = (
+        'History')
+      BottomAxis.LabelsAngle = 90
+      BottomAxis.LabelsMultiLine = True
+      View3D = False
+      Zoom.Allow = False
       Align = alTop
-      Alignment = taCenter
-      Enabled = False
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-      ReadOnly = True
       TabOrder = 1
+      DefaultCanvas = 'TGDIPlusCanvas'
+      ColorPaletteIndex = 13
+      object sHistory: TLineSeries
+        HoverElement = [heCurrent]
+        Marks.ChildLayout = slLeftRight
+        Marks.Angle = 90
+        Marks.AutoPosition = False
+        Title = 'History'
+        Brush.BackColor = clDefault
+        DrawStyle = dsAll
+        Pointer.InflateMargins = True
+        Pointer.Style = psRectangle
+        Pointer.Visible = True
+        XValues.Name = 'X'
+        XValues.Order = loAscending
+        YValues.Name = 'Y'
+        YValues.Order = loNone
+        Data = {0000000000}
+        Detail = {0000000000}
+      end
     end
   end
   object pnlLogin: TPanel
@@ -115,7 +134,7 @@ object frmStart: TfrmStart
     Left = 473
     Top = 4
     Width = 288
-    Height = 552
+    Height = 619
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -126,6 +145,7 @@ object frmStart: TfrmStart
     Padding.Right = 4
     Padding.Bottom = 4
     TabOrder = 1
+    ExplicitHeight = 552
     object lblWelcom: TLabel
       AlignWithMargins = True
       Left = 18
@@ -150,7 +170,7 @@ object frmStart: TfrmStart
     object bbnClose: TBitBtn
       AlignWithMargins = True
       Left = 18
-      Top = 488
+      Top = 555
       Width = 252
       Height = 46
       Cursor = crHandPoint
@@ -165,11 +185,12 @@ object frmStart: TfrmStart
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
+      ExplicitTop = 488
     end
     object bbnLogin: TBitBtn
       AlignWithMargins = True
       Left = 18
-      Top = 425
+      Top = 492
       Width = 252
       Height = 46
       Cursor = crHandPoint
@@ -187,6 +208,7 @@ object frmStart: TfrmStart
       ShowHint = True
       TabOrder = 1
       OnClick = bbnLoginClick
+      ExplicitTop = 425
     end
   end
   object DEBUGINGREMOVE: TActionList

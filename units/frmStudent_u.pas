@@ -8,7 +8,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, VclTee.TeeGDIPlus,
   Vcl.StdCtrls, Vcl.Buttons, VclTee.TeEngine, VclTee.TeeProcs, VclTee.Chart,
   Vcl.ComCtrls, VclTee.Series, clsRecycle_u, dmRecycle_u, Generics.Collections,
-  clsUsers_u;
+  clsUsers_u, Vcl.WinXPickers;
 
 type
   TfrmStudent = class(TForm)
@@ -16,7 +16,6 @@ type
     pnlControl: TPanel;
     cStats: TChart;
     bbnLogout: TBitBtn;
-    redRecycleSummary: TRichEdit;
     lblWelcome: TLabel;
     redStudentSumary: TRichEdit;
     sRecycled: TPieSeries;

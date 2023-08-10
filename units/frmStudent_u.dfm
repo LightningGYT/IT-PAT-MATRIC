@@ -1,9 +1,8 @@
 object frmStudent: TfrmStudent
   Left = 0
   Top = 0
-  AutoSize = True
   Caption = 'Student'
-  ClientHeight = 555
+  ClientHeight = 524
   ClientWidth = 779
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
@@ -21,33 +20,36 @@ object frmStudent: TfrmStudent
     Left = 4
     Top = 4
     Width = 507
-    Height = 547
+    Height = 516
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
     Margins.Bottom = 4
     Align = alLeft
     TabOrder = 0
-    ExplicitHeight = 546
+    ExplicitHeight = 583
     object cStats: TChart
       AlignWithMargins = True
       Left = 5
       Top = 5
       Width = 497
-      Height = 296
+      Height = 506
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
       Title.Text.Strings = (
         'Recycled')
+      Panning.MouseWheel = pmwNone
       View3D = False
       View3DOptions.Elevation = 315
       View3DOptions.Orthogonal = False
       View3DOptions.Perspective = 0
       View3DOptions.Rotation = 360
-      Align = alTop
+      Zoom.Allow = False
+      Align = alClient
       TabOrder = 0
+      ExplicitHeight = 497
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 13
       object sRecycled: TPieSeries
@@ -78,27 +80,13 @@ object frmStudent: TfrmStudent
         Detail = {0000000000}
       end
     end
-    object redRecycleSummary: TRichEdit
-      AlignWithMargins = True
-      Left = 5
-      Top = 309
-      Width = 498
-      Height = 233
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Align = alLeft
-      TabOrder = 1
-      ExplicitHeight = 232
-    end
   end
   object pnlControl: TPanel
     AlignWithMargins = True
     Left = 519
     Top = 4
     Width = 256
-    Height = 547
+    Height = 516
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -130,7 +118,7 @@ object frmStudent: TfrmStudent
     object bbnLogout: TBitBtn
       AlignWithMargins = True
       Left = 14
-      Top = 482
+      Top = 451
       Width = 228
       Height = 51
       Cursor = crHandPoint
@@ -142,14 +130,15 @@ object frmStudent: TfrmStudent
       Caption = '&Logout'
       TabOrder = 0
       OnClick = bbnLogoutClick
-      ExplicitTop = 481
+      ExplicitLeft = 9
+      ExplicitTop = 460
     end
     object redStudentSumary: TRichEdit
       AlignWithMargins = True
       Left = 5
       Top = 51
       Width = 246
-      Height = 250
+      Height = 370
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
