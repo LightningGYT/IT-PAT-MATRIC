@@ -5,6 +5,7 @@ interface
 uses Hash, SysUtils, Generics.Collections, Vcl.Dialogs;
 
 type
+  { Records }
   TUser = record
     LoginID: String;
     Username: String;
@@ -18,14 +19,14 @@ type
         (Admin: boolean);
   end;
 
-  TTeacher = class
-  private
-    fUserData: TUser;
-  public
-    constructor Create(uUser: TUser);
+  TStudent = record
+    ID: String;
+    Name: String;
+    Surname: String;
   end;
 
-  TStudent = class
+  { Classes }
+  TUserStudent = class
   private
     fUserData: TUser;
     fClassID: String;
@@ -43,6 +44,29 @@ type
     function toString: String;
   end;
 
+  TClass = class
+  private
+    fClassID: String;
+    fStudents: TDictionary<String, TStudent>;
+    fGrade: integer;
+    fSize: integer;
+  public
+    constructor Create(sTeacherID: string);
+    function GetGrade: integer;
+    function GetSize: integer;
+  end;
+
+  TUserTeacher = class
+  private
+    fUserData: TUser;
+    fClass: TClass;
+  public
+    constructor Create(uUser: TUser);
+    function GetClassID: String;
+    function toString: String;
+  end;
+
+  { Other functions }
 function Login(sUsername, sPassword: String): TUser;
 function PrepPassword(sPassword, sSalt: String): String;
 
@@ -110,7 +134,18 @@ begin
     // In Teacher's Table
     if RecordCount <> 0 then
     begin
-      showMessage('Teacher');
+
+      with objUser do
+      begin
+        Teacher := True;
+        ID := FieldByName('ID').AsString;
+        Name := FieldByName('Teacher_Name').AsString;
+        Surname := FieldByName('Teacher_Surname').AsString;
+        Admin := FieldByName('Admin').AsBoolean;
+      end;
+
+      Result := objUser;
+
       EXIT;
     end;
 
@@ -146,7 +181,7 @@ end;
 
 {$REGION$ TStudent}
 
-constructor TStudent.Create(uUser: TUser);
+constructor TUserStudent.Create(uUser: TUser);
 begin
 
   // Check if the usertype is student and not teacher
@@ -190,7 +225,7 @@ begin
 end;
 
 // Gets the Student's Grade
-function TStudent.GetGrade: integer;
+function TUserStudent.GetGrade: integer;
 var
   iGrade: integer;
 begin
@@ -214,23 +249,23 @@ begin
 
 end;
 
-function TStudent.GetID: String;
+function TUserStudent.GetID: String;
 begin
   Result := fUserData.ID;
 end;
 
-function TStudent.GetName: String;
+function TUserStudent.GetName: String;
 begin
   Result := fUserData.Name;
 end;
 
-function TStudent.GetSurname: String;
+function TUserStudent.GetSurname: String;
 begin
   Result := fUserData.Surname;
 end;
 
 // Gets the Student's Teacher's full Name
-function TStudent.GetTeacher: String;
+function TUserStudent.GetTeacher: String;
 var
   sTeacher: String;
 begin
@@ -253,26 +288,105 @@ begin
   Result := sTeacher;
 end;
 
-function TStudent.toString: String;
+function TUserStudent.toString: String;
 begin
-  Result := 'Name: ' + GetName() + #13 + 'Surname: ' + GetSurname() + #13 + #13 +
-    'Grade: ' + IntToStr(GetGrade()) + #13 + 'Teacher: ' + GetTeacher();
+  Result := 'Name: ' + GetName() + #13 + 'Surname: ' + GetSurname() + #13 + #13
+    + 'Grade: ' + IntToStr(GetGrade()) + #13 + 'Teacher: ' + GetTeacher();
 end;
 
 {$ENDREGION$ TStudent}
-{ TTeacher }
+{ TUserTeacher }
 
-{$REGION$ TTeacher }
+{$REGION$ TUserTeacher }
 
-constructor TTeacher.Create(uUser: TUser);
+constructor TUserTeacher.Create(uUser: TUser);
 begin
+  // Checks if the user is a teacher
   if not uUser.Teacher then
   begin
     raise Exception.Create('Not Teacher');
   end;
 
   fUserData := uUser;
+
+  fClass := TClass.Create(fUserData.ID);
+
 end;
-{$ENDREGION$ TTeacher }
+
+function TUserTeacher.GetClassID: String;
+begin
+Result := fClass.fClassID;
+end;
+
+function TUserTeacher.toString: String;
+begin
+  Result := 'Name: ' + fUserData.Name + ' ' + fUserData.Surname + #13#13+
+    'Class:'+#13#9+'Grade: ' + IntToStr(fClass.GetGrade()) + #13#9 + 'Size:' + IntToStr(fClass.GetSize());
+end;
+
+{$ENDREGION$ TUserTeacher }
+{ TClass }
+{$REGION$ TClass }
+
+constructor TClass.Create(sTeacherID: string);
+var
+  objStudent: TStudent;
+begin
+  // Inits the Dictonary
+  fStudents := TDictionary<String, TStudent>.Create;
+
+  with dmRecycle.qryRecycle do
+  begin
+    // Gets class info
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text := 'SELECT * FROM Class WHERE Teacher_ID =:ID';
+    Parameters.ParamByName('ID').Value := sTeacherID;
+
+    Active := True;
+
+    fClassID := FieldByName('ID').AsString;
+    fGrade := FieldByName('Grade').AsInteger;
+
+    // Gets Students
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text :=
+      'SELECT C.Class_Id, C.Student_ID, S.ID, S.Student_Name, S.Student_Surname  FROM ClassList as C, Student as S WHERE (Class_Id =:ID) AND (C.Student_ID = S.ID) ORDER BY Student_Name';
+    Parameters.ParamByName('ID').Value := fClassID;
+
+    Active := True;
+
+    First;
+    while not EOF do
+    begin
+      objStudent.ID := FieldByName('ID').AsString;
+      objStudent.Name := FieldByName('Student_Name').AsString;
+      objStudent.Surname := FieldByName('Student_Surname').AsString;
+
+      fStudents.Add(objStudent.ID, objStudent);
+
+      Next;
+    end;
+
+    fSize := RecordCount;
+
+  end;
+
+end;
+
+function TClass.GetGrade: integer;
+begin
+  Result := fGrade;
+end;
+
+function TClass.GetSize: integer;
+begin
+  Result := fSize;
+end;
+
+{$ENDREGION$ TCLass }
 
 end.

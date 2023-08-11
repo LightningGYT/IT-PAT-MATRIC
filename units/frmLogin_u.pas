@@ -63,7 +63,8 @@ begin
 
   if objUser.Teacher then
   begin
-    //
+    Close;
+    frmStart.LoginTeacher(objUser);
   end
   else
   begin

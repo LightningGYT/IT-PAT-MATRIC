@@ -8,7 +8,6 @@ uses
   clsUsers_u in 'units\clsUsers_u.pas',
   frmStudent_u in 'units\frmStudent_u.pas' {frmStudent},
   frmTeacher_u in 'units\frmTeacher_u.pas' {frmTeacher},
-  clsClass_u in 'units\clsClass_u.pas',
   clsRecycle_u in 'units\clsRecycle_u.pas';
 
 {$R *.res}

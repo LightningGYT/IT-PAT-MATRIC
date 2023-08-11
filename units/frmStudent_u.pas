@@ -23,9 +23,9 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
-    objStudent: TStudent;
+    objStudent: TUserStudent;
   public
-    procedure SetStudent(Student: TStudent);
+    procedure SetStudent(Student: TUserStudent);
   end;
 
 var
@@ -73,7 +73,7 @@ begin
 
 end;
 
-procedure TfrmStudent.SetStudent(Student: TStudent);
+procedure TfrmStudent.SetStudent(Student: TUserStudent);
 begin
   objStudent := Student;
 end;

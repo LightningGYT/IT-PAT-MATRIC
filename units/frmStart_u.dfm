@@ -3,45 +3,35 @@ object frmStart: TfrmStart
   Top = 0
   AutoSize = True
   Caption = 'Recycler'
-  ClientHeight = 627
-  ClientWidth = 765
+  ClientHeight = 502
+  ClientWidth = 616
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
-  Font.Height = -19
+  Font.Height = -15
   Font.Name = 'Consolas'
   Font.Style = []
   Position = poDesigned
   OnShow = FormShow
-  PixelsPerInch = 120
-  TextHeight = 22
+  TextHeight = 18
   object pnlStats: TPanel
     AlignWithMargins = True
-    Left = 4
-    Top = 4
-    Width = 461
-    Height = 619
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Left = 3
+    Top = 3
+    Width = 369
+    Height = 496
     Align = alLeft
-    Padding.Left = 4
-    Padding.Top = 4
-    Padding.Right = 4
-    Padding.Bottom = 4
+    Padding.Left = 3
+    Padding.Top = 3
+    Padding.Right = 3
+    Padding.Bottom = 3
     TabOrder = 0
-    ExplicitHeight = 552
     object cStats: TChart
       AlignWithMargins = True
-      Left = 9
-      Top = 9
-      Width = 443
-      Height = 272
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 7
+      Top = 7
+      Width = 355
+      Height = 218
       Title.Text.Strings = (
         'Recycled Items')
       View3D = False
@@ -89,14 +79,10 @@ object frmStart: TfrmStart
     end
     object cHistory: TChart
       AlignWithMargins = True
-      Left = 9
-      Top = 289
-      Width = 443
-      Height = 312
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 7
+      Top = 231
+      Width = 355
+      Height = 250
       AllowPanning = pmNone
       Legend.Visible = False
       Title.Text.Strings = (
@@ -131,74 +117,67 @@ object frmStart: TfrmStart
   end
   object pnlLogin: TPanel
     AlignWithMargins = True
-    Left = 473
-    Top = 4
-    Width = 288
-    Height = 619
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Left = 378
+    Top = 3
+    Width = 231
+    Height = 496
     Align = alLeft
-    Padding.Left = 4
-    Padding.Top = 4
-    Padding.Right = 4
-    Padding.Bottom = 4
+    Padding.Left = 3
+    Padding.Top = 3
+    Padding.Right = 3
+    Padding.Bottom = 3
     TabOrder = 1
-    ExplicitHeight = 552
     object lblWelcom: TLabel
       AlignWithMargins = True
-      Left = 18
-      Top = 43
-      Width = 252
-      Height = 40
-      Margins.Left = 13
-      Margins.Top = 38
-      Margins.Right = 13
-      Margins.Bottom = 13
+      Left = 14
+      Top = 34
+      Width = 203
+      Height = 32
+      Margins.Left = 10
+      Margins.Top = 30
+      Margins.Right = 10
+      Margins.Bottom = 10
       Align = alTop
       Alignment = taCenter
       Caption = 'Welcome'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -34
+      Font.Height = -27
       Font.Name = 'Consolas'
       Font.Style = []
       ParentFont = False
-      ExplicitWidth = 133
+      ExplicitWidth = 105
     end
     object bbnClose: TBitBtn
       AlignWithMargins = True
-      Left = 18
-      Top = 555
-      Width = 252
-      Height = 46
+      Left = 14
+      Top = 445
+      Width = 203
+      Height = 37
       Cursor = crHandPoint
       Hint = 'Close the app'
-      Margins.Left = 13
-      Margins.Top = 4
-      Margins.Right = 13
-      Margins.Bottom = 13
+      Margins.Left = 10
+      Margins.Right = 10
+      Margins.Bottom = 10
       Align = alBottom
       Kind = bkClose
       NumGlyphs = 2
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
-      ExplicitTop = 488
     end
     object bbnLogin: TBitBtn
       AlignWithMargins = True
-      Left = 18
-      Top = 492
-      Width = 252
-      Height = 46
+      Left = 14
+      Top = 396
+      Width = 203
+      Height = 36
       Cursor = crHandPoint
       Hint = 'Login'
-      Margins.Left = 13
-      Margins.Top = 13
-      Margins.Right = 13
-      Margins.Bottom = 13
+      Margins.Left = 10
+      Margins.Top = 10
+      Margins.Right = 10
+      Margins.Bottom = 10
       Align = alBottom
       Caption = '&Login'
       Default = True
@@ -208,7 +187,6 @@ object frmStart: TfrmStart
       ShowHint = True
       TabOrder = 1
       OnClick = bbnLoginClick
-      ExplicitTop = 425
     end
   end
   object DEBUGINGREMOVE: TActionList

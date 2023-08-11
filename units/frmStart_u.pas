@@ -32,6 +32,7 @@ type
     { Private declarations }
   public
     procedure LoginStudent(uUser: TUser);
+    procedure LoginTeacher(uUser: TUser);
   end;
 
 var
@@ -100,13 +101,25 @@ end;
 
 procedure TfrmStart.LoginStudent(uUser: TUser);
 var
-  objStudent: TStudent;
+  objStudent: TUserStudent;
 begin
 
-  objStudent := TStudent.Create(uUser);
+  objStudent := TUserStudent.Create(uUser);
   frmStudent.SetStudent(objStudent);
   Hide;
   frmStudent.Show;
+
+end;
+
+procedure TfrmStart.LoginTeacher(uUser: TUser);
+var
+  objTeacher: TUserTeacher;
+begin
+
+  objTeacher := TUserTeacher.Create(uUser);
+  frmTeacher.setTeacher(objTeacher);
+  Hide;
+  frmTeacher.Show;
 
 end;
 

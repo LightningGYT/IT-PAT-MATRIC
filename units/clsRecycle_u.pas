@@ -22,6 +22,7 @@ type
     function GetMaterials: TDictionary<String, TMaterial>;
     function GetHistory: TDictionary<String, integer>;
     function GetByStudent(sID: String): TDictionary<String, TMaterial>;
+    function GetByClass(sID: String): TDictionary<String, TMaterial>;
   end;
 
 const
@@ -124,56 +125,94 @@ begin
   CalcHistory;
 end;
 
-function TRecycler.GetByStudent(sID: String): TDictionary<String, TMaterial>;
+function TRecycler.GetByClass(sID: String): TDictionary<String, TMaterial>;
 var
   objMaterial: TMaterial;
-  Materials: TDictionary<String, TMaterial>;
+  dictMaterials, dictStudentMaterials: TDictionary<String, TMaterial>;
+  sKey: String;
 begin
 
-  Materials := TDictionary<String, TMaterial>.Create;
+  dictMaterials := TDictionary<String, TMaterial>.Create;
 
   with dmRecycle.qryMaterials do
   begin
     Active := False;
     SQL.Clear;
 
-    SQL.Text := 'SELECT * FROM Materials';
-    ExecSQL;
+    SQL.Text := 'SELECT Student_ID FROM ClassList WHERE Class_Id =:CLASSID';
+    Parameters.ParamByName('CLASSID').Value := sID;
+
     Active := True;
 
+    First;
     while not EOF do
     begin
+      dictStudentMaterials := GetByStudent(FieldByName('Student_ID').AsString);
 
-      objMaterial.fID := FieldByName('ID').AsString;
-
-      with dmRecycle.qryRecycle do
+      for sKey in dictStudentMaterials.Keys do
       begin
-        Active := False;
-        SQL.Clear;
 
-        SQL.Add('SELECT * FROM Recycle WHERE (Material_ID = ' +
-          QuotedStr(objMaterial.fID) + ') AND (Student_ID = ' +
-          QuotedStr(sID) + ')');
-
-        Active := True;
-
-        objMaterial.fAmount := RecordCount;
-        objMaterial.fWieght := 0;
-
-        while not EOF do
+        if dictMaterials.ContainsKey(sKey) then
         begin
-          objMaterial.fWieght := objMaterial.fWieght + FieldByName('Weight')
-            .AsInteger;
-          Next;
+          objMaterial := dictMaterials.Items[sKey];
+          objMaterial.fWieght := objMaterial.fWieght + dictStudentMaterials.Items[sKey].fWieght;
+          objMaterial.fAmount := objMaterial.fAmount + dictStudentMaterials.Items[sKey].fAmount;
+          dictMaterials.AddOrSetValue(sKey, objMaterial);
+        end
+        else
+        begin
+          dictMaterials.Add(sKey, dictStudentMaterials.Items[sKey]);
         end;
 
       end;
 
-      Materials.Add(FieldByName('Material_Name').AsString, objMaterial);
-
       Next;
     end;
 
+  end;
+
+  Result := dictMaterials;
+
+end;
+
+function TRecycler.GetByStudent(sID: String): TDictionary<String, TMaterial>;
+var
+  objMaterial: TMaterial;
+  Materials: TDictionary<String, TMaterial>;
+  key: String;
+begin
+
+  Materials := TDictionary<String, TMaterial>.Create;
+
+  for key in fMaterials.Keys do
+  begin
+
+    objMaterial.fID := fMaterials[key].fID;
+
+    with dmRecycle.qryRecycle do
+    begin
+      Active := False;
+      SQL.Clear;
+
+      SQL.Add('SELECT * FROM Recycle WHERE (Material_ID = ' +
+        QuotedStr(objMaterial.fID) + ') AND (Student_ID = ' +
+        QuotedStr(sID) + ')');
+
+      Active := True;
+
+      objMaterial.fAmount := RecordCount;
+      objMaterial.fWieght := 0;
+
+      while not EOF do
+      begin
+        objMaterial.fWieght := objMaterial.fWieght + FieldByName('Weight')
+          .AsInteger;
+        Next;
+      end;
+
+    end;
+
+    Materials.Add(key, objMaterial);
   end;
 
   Result := Materials;
@@ -188,6 +227,5 @@ function TRecycler.GetMaterials: TDictionary<String, TMaterial>;
 begin
   Result := fMaterials;
 end;
-
 
 end.

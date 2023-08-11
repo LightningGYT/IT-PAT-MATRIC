@@ -120,7 +120,6 @@
             <Form>frmTeacher</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="units\clsClass_u.pas"/>
         <DCCReference Include="units\clsRecycle_u.pas"/>
         <None Include="frmRecycler_p.todo"/>
         <BuildConfiguration Include="Base">
