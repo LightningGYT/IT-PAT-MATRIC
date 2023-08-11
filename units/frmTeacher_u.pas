@@ -23,9 +23,13 @@ type
     bbnLogOut: TBitBtn;
     bbnRecycle: TBitBtn;
     cClassRecycle: TChart;
+    pnlLeaderBoard: TPanel;
+    lblLeaderboard: TLabel;
+    redLeaderBoard: TRichEdit;
     sRecycled: TPieSeries;
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure bbnLogOutClick(Sender: TObject);
   private
     objTeacher: TUserTeacher;
   public
@@ -43,6 +47,11 @@ uses frmStart_u, clsRecycle_u;
 
 { TfrmTeacher }
 
+procedure TfrmTeacher.bbnLogOutClick(Sender: TObject);
+begin
+  Close;
+end;
+
 procedure TfrmTeacher.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   frmStart.Show;
@@ -51,6 +60,7 @@ end;
 procedure TfrmTeacher.FormShow(Sender: TObject);
 var
   dictMaterials: TDictionary<string, TMaterial>;
+  dictTopStudents: TDictionary<String, Integer>;
   key: String;
 begin
 
@@ -73,6 +83,19 @@ begin
 
   end;
 
+  // Get Top Students
+  dictTopStudents := objRecycle.GetTopStudents(objTeacher.GetClassID());
+
+  with redLeaderBoard.Lines do
+  begin
+    Clear;
+
+    for key in dictTopStudents.Keys do
+    begin
+      Add(FindStudent(key))
+    end;
+
+  end;
 end;
 
 procedure TfrmTeacher.setTeacher(Teacher: TUserTeacher);

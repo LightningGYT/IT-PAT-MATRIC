@@ -23,6 +23,9 @@ type
     function GetHistory: TDictionary<String, integer>;
     function GetByStudent(sID: String): TDictionary<String, TMaterial>;
     function GetByClass(sID: String): TDictionary<String, TMaterial>;
+    function GetTopStudents(Amount: integer = 5): TDictionary<String, integer>;overload;
+    function GetTopStudents(sClassID: String; Amount: integer = 5)
+      : TDictionary<String, integer>; overload;
   end;
 
 const
@@ -155,8 +158,10 @@ begin
         if dictMaterials.ContainsKey(sKey) then
         begin
           objMaterial := dictMaterials.Items[sKey];
-          objMaterial.fWieght := objMaterial.fWieght + dictStudentMaterials.Items[sKey].fWieght;
-          objMaterial.fAmount := objMaterial.fAmount + dictStudentMaterials.Items[sKey].fAmount;
+          objMaterial.fWieght := objMaterial.fWieght +
+            dictStudentMaterials.Items[sKey].fWieght;
+          objMaterial.fAmount := objMaterial.fAmount +
+            dictStudentMaterials.Items[sKey].fAmount;
           dictMaterials.AddOrSetValue(sKey, objMaterial);
         end
         else
@@ -226,6 +231,72 @@ end;
 function TRecycler.GetMaterials: TDictionary<String, TMaterial>;
 begin
   Result := fMaterials;
+end;
+
+// Gets Top students from a class
+function TRecycler.GetTopStudents(sClassID: String; Amount: integer)
+  : TDictionary<String, integer>;
+var
+  dictStudents: TDictionary<String, integer>;
+  I: integer;
+begin
+  dictStudents := TDictionary<String, integer>.Create;
+
+  with dmRecycle.qryRecycle do
+  begin
+    Active := True;
+    SQL.Clear;
+
+    SQL.Text :=
+      'SELECT R.Student_ID, SUM(Weight) as tot FROM ClassList as C, Student as S, Recycle as R WHERE (C.Class_Id =:CLASSID) AND (C.Student_ID = S.ID) AND (S.ID = R.Student_ID) GROUP BY R.Student_ID ORDER BY SUM(Weight) DESC';
+    Parameters.ParamByName('CLASSID').Value := sClassID;
+
+    Active := True;
+
+    First;
+    for I := 1 to Amount do
+    begin
+      dictStudents.Add(FieldByName('Student_ID').AsString, FieldByName('tot').AsInteger);
+      Next;
+    end;
+
+  end;
+
+  Result := dictStudents;
+
+end;
+
+// Get the top students in the school
+function TRecycler.GetTopStudents(Amount: integer)
+  : TDictionary<String, integer>;
+var
+  dictStudents: TDictionary<String, integer>;
+  I: integer;
+begin
+  dictStudents := TDictionary<String, integer>.Create;
+
+  with dmRecycle.qryRecycle do
+  begin
+    Active := True;
+    SQL.Clear;
+
+    SQL.Text :=
+      'SELECT Student_Name, Student_Surname, SUM(Weight) as tot FROM Student as S, Recycle as R WHERE (S.ID = R.Student_ID) ORDER BY SUM(Weight) DESC GROUP BY R.Student_ID';
+
+    Active := True;
+
+    First;
+    for I := 1 to Amount do
+    begin
+      dictStudents.Add(FieldByName('Student_Name').AsString + ' ' +
+        FieldByName('Student_Surname').AsString, FieldByName('tot').AsInteger);
+      Next;
+    end;
+
+  end;
+
+  Result := dictStudents;
+
 end;
 
 end.

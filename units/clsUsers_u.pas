@@ -69,10 +69,48 @@ type
   { Other functions }
 function Login(sUsername, sPassword: String): TUser;
 function PrepPassword(sPassword, sSalt: String): String;
+function FindStudent(sStudentID: String): String;
+function FindTeacher(sTeacherID: String): String;
 
 implementation
 
 uses dmRecycle_u, frmLogin_u;
+
+function FindStudent(sStudentID: String): String;
+begin
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text :=
+      'SELECT Student_Name, Student_Surname FROM Student WHERE ID =:STUDENTID';
+    Parameters.ParamByName('STUDENTID').Value := sStudentID;
+
+    Active := True;
+
+    Result := FieldByName('Student_Name').AsString + ' ' +
+      FieldByName('Student_Surname').AsString;
+  end;
+end;
+
+function FindTeacher(sTeacherID: String): String;
+begin
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text :=
+      'SELECT Teacher_Name, Teacher_Surname FROM Student WHERE ID =:TEACHERID';
+    Parameters.ParamByName('TEACHERID').Value := sTeacherID;
+
+    Active := True;
+
+    Result := FieldByName('Teacher_Name').AsString + ' ' +
+      FieldByName('Teacher_Surname').AsString;
+  end;
+end;
 
 function PrepPassword(sPassword, sSalt: String): String;
 var
@@ -315,13 +353,14 @@ end;
 
 function TUserTeacher.GetClassID: String;
 begin
-Result := fClass.fClassID;
+  Result := fClass.fClassID;
 end;
 
 function TUserTeacher.toString: String;
 begin
-  Result := 'Name: ' + fUserData.Name + ' ' + fUserData.Surname + #13#13+
-    'Class:'+#13#9+'Grade: ' + IntToStr(fClass.GetGrade()) + #13#9 + 'Size:' + IntToStr(fClass.GetSize());
+  Result := 'Name: ' + fUserData.Name + ' ' + fUserData.Surname + #13#13 +
+    'Class:' + #13#9 + 'Grade: ' + IntToStr(fClass.GetGrade()) + #13#9 + 'Size:'
+    + IntToStr(fClass.GetSize());
 end;
 
 {$ENDREGION$ TUserTeacher }
