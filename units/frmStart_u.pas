@@ -24,10 +24,12 @@ type
     Teacher: TAction;
     cHistory: TChart;
     sHistory: TLineSeries;
+    Recycle: TAction;
     procedure bbnLoginClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure StudentExecute(Sender: TObject);
     procedure TeacherExecute(Sender: TObject);
+    procedure RecycleExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -47,16 +49,22 @@ implementation
 
 {$R *.dfm}
 
-uses frmLogin_u, dmRecycle_u, frmTeacher_u, frmStudent_u;
+uses frmLogin_u, dmRecycle_u, frmTeacher_u, frmStudent_u, frmRecycler_u;
 
+//DEBUG ONLY
 procedure TfrmStart.StudentExecute(Sender: TObject);
 begin
   frmStudent.ShowModal;
 end;
-
+//DEBUG ONLY
 procedure TfrmStart.TeacherExecute(Sender: TObject);
 begin
   frmTeacher.ShowModal;
+end;
+//DEBUG ONLY
+procedure TfrmStart.RecycleExecute(Sender: TObject);
+begin
+frmRecycle.ShowModal;
 end;
 
 procedure TfrmStart.bbnLoginClick(Sender: TObject);

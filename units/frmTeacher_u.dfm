@@ -153,7 +153,7 @@ object frmTeacher: TfrmTeacher
         Left = 4
         Top = 41
         Width = 194
-        Height = 168
+        Height = 200
         Cursor = crArrow
         Align = alTop
         ReadOnly = True
@@ -196,6 +196,20 @@ object frmTeacher: TfrmTeacher
         ParentShowHint = False
         ShowHint = True
         TabOrder = 1
+      end
+      object bbnAdmin: TBitBtn
+        AlignWithMargins = True
+        Left = 4
+        Top = 84
+        Width = 194
+        Height = 40
+        Cursor = crHandPoint
+        Align = alBottom
+        Caption = '&Admin'
+        Enabled = False
+        TabOrder = 2
+        Visible = False
+        ExplicitTop = 99
       end
     end
   end

@@ -202,5 +202,10 @@ object frmStart: TfrmStart
       ShortCut = 49236
       OnExecute = TeacherExecute
     end
+    object Recycle: TAction
+      Caption = 'Recycle'
+      ShortCut = 49234
+      OnExecute = RecycleExecute
+    end
   end
 end

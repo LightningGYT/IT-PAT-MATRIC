@@ -27,6 +27,7 @@ type
     lblLeaderboard: TLabel;
     redLeaderBoard: TRichEdit;
     sRecycled: TPieSeries;
+    bbnAdmin: TBitBtn;
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bbnLogOutClick(Sender: TObject);
@@ -63,6 +64,10 @@ var
   dictTopStudents: TDictionary<String, Integer>;
   key: String;
 begin
+
+  // Enabling Admin button
+  bbnAdmin.Enabled := objTeacher.GetAdmin();
+  bbnAdmin.Visible := objTeacher.GetAdmin();
 
   // Displays The Teacher's Info
   with redSummary.Lines do

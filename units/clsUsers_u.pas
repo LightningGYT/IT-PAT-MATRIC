@@ -31,7 +31,6 @@ type
     fUserData: TUser;
     fClassID: String;
     fTeacher: String;
-    fRecycleHistory: TDictionary<String, integer>;
   public
     constructor Create(uUser: TUser);
 
@@ -63,18 +62,46 @@ type
   public
     constructor Create(uUser: TUser);
     function GetClassID: String;
+    function GetAdmin: boolean;
     function toString: String;
   end;
 
   { Other functions }
 function Login(sUsername, sPassword: String): TUser;
 function PrepPassword(sPassword, sSalt: String): String;
-function FindStudent(sStudentID: String): String;
+function FindStudent(sStudentID: String): String;overload;
+function FindStudent(sFirstname, sSurname:String):String;overload;
 function FindTeacher(sTeacherID: String): String;
 
 implementation
 
 uses dmRecycle_u, frmLogin_u;
+
+function FindStudent(sFirstname, sSurname:String):String;
+begin
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text := 'SELECT ID FROM Student WHERE (Student_Name =:FIRSTNAME) AND (Student_Surname =:SURNAME)';
+    Parameters.ParamByName('FIRSTNAME').Value := sFirstname;
+    Parameters.ParamByName('SURNAME').Value := sSurname;
+
+    Active := True;
+
+    if RecordCount <> 0 then
+    begin
+      Result := FieldByName('ID').AsString;
+      exit;
+    end
+    else
+    begin
+      raise Exception.Create('Student not found');
+    end;
+
+  end;
+end;
 
 function FindStudent(sStudentID: String): String;
 begin
@@ -349,6 +376,11 @@ begin
 
   fClass := TClass.Create(fUserData.ID);
 
+end;
+
+function TUserTeacher.GetAdmin: boolean;
+begin
+  Result := fUserData.Admin;
 end;
 
 function TUserTeacher.GetClassID: String;

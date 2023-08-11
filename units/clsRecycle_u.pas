@@ -23,9 +23,12 @@ type
     function GetHistory: TDictionary<String, integer>;
     function GetByStudent(sID: String): TDictionary<String, TMaterial>;
     function GetByClass(sID: String): TDictionary<String, TMaterial>;
-    function GetTopStudents(Amount: integer = 5): TDictionary<String, integer>;overload;
+    function GetTopStudents(Amount: integer = 5)
+      : TDictionary<String, integer>; overload;
     function GetTopStudents(sClassID: String; Amount: integer = 5)
       : TDictionary<String, integer>; overload;
+    function Recycle(sStudentID, sMaterialID: String; iWeight: integer)
+      : boolean;
   end;
 
 const
@@ -256,13 +259,58 @@ begin
     First;
     for I := 1 to Amount do
     begin
-      dictStudents.Add(FieldByName('Student_ID').AsString, FieldByName('tot').AsInteger);
+      dictStudents.Add(FieldByName('Student_ID').AsString,
+        FieldByName('tot').AsInteger);
       Next;
     end;
 
   end;
 
   Result := dictStudents;
+
+end;
+
+function TRecycler.Recycle(sStudentID, sMaterialID: String;
+  iWeight: integer): boolean;
+var
+  dtDate: TDateTime;
+  Uuid: TGuid;
+  sUuid: String;
+begin
+  dtDate := Now;
+  CreateGUID(Uuid);
+
+  sUuid := GUIDToString(Uuid);
+  sUuid := sUuid.Replace('{', '');
+  sUuid := sUuid.Replace('}', '');
+
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text :=
+      'INSERT INTO Recycle VALUES (:ID , :STUDENTID , :MATERIALID , :DATE , :WEIGHT)';
+    with Parameters do
+    begin
+      ParamByName('ID').Value := sUuid;
+      ParamByName('STUDENTID').Value := sStudentID;
+      ParamByName('MATERIALID').Value := sMaterialID;
+      ParamByName('DATE').Value := dtDate;
+      ParamByName('WEIGHT').Value := iWeight;
+    end;
+
+    try
+      ExecSQL;
+    except
+      begin
+        Result := False;
+        exit;
+      end;
+    end;
+
+    Result := True;
+  end;
 
 end;
 
