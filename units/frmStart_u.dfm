@@ -3,7 +3,7 @@ object frmStart: TfrmStart
   Top = 0
   AutoSize = True
   Caption = 'Recycler'
-  ClientHeight = 504
+  ClientHeight = 505
   ClientWidth = 616
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
@@ -19,7 +19,7 @@ object frmStart: TfrmStart
     Left = 3
     Top = 3
     Width = 369
-    Height = 498
+    Height = 499
     Align = alLeft
     Padding.Left = 3
     Padding.Top = 3
@@ -50,6 +50,7 @@ object frmStart: TfrmStart
       ColorPaletteIndex = 13
       object sRecycled: TPieSeries
         HoverElement = []
+        Marks.Visible = False
         Marks.Tail.Margin = 2
         Title = 'Recyled Items'
         XValues.Order = loAscending
@@ -89,6 +90,8 @@ object frmStart: TfrmStart
         'History')
       BottomAxis.LabelsAngle = 90
       BottomAxis.LabelsMultiLine = True
+      LeftAxis.Automatic = False
+      LeftAxis.AutomaticMinimum = False
       View3D = False
       Zoom.Allow = False
       Align = alTop
@@ -104,7 +107,7 @@ object frmStart: TfrmStart
         Brush.BackColor = clDefault
         DrawStyle = dsAll
         Pointer.InflateMargins = True
-        Pointer.Style = psRectangle
+        Pointer.Style = psDonut
         Pointer.Visible = True
         XValues.Name = 'X'
         XValues.Order = loAscending
@@ -120,7 +123,7 @@ object frmStart: TfrmStart
     Left = 378
     Top = 3
     Width = 231
-    Height = 498
+    Height = 499
     Align = alLeft
     Padding.Left = 3
     Padding.Top = 3
@@ -151,7 +154,7 @@ object frmStart: TfrmStart
     object bbnClose: TBitBtn
       AlignWithMargins = True
       Left = 14
-      Top = 447
+      Top = 448
       Width = 203
       Height = 37
       Cursor = crHandPoint
@@ -169,7 +172,7 @@ object frmStart: TfrmStart
     object bbnLogin: TBitBtn
       AlignWithMargins = True
       Left = 14
-      Top = 398
+      Top = 399
       Width = 203
       Height = 36
       Cursor = crHandPoint
