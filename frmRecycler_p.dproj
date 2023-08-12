@@ -125,6 +125,10 @@
             <Form>frmRecycle</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="units\frmAdmin_u.pas">
+            <Form>frmAdmin</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="frmRecycler_p.todo"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

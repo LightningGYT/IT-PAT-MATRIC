@@ -9,7 +9,8 @@ uses
   frmStudent_u in 'units\frmStudent_u.pas' {frmStudent},
   frmTeacher_u in 'units\frmTeacher_u.pas' {frmTeacher},
   clsRecycle_u in 'units\clsRecycle_u.pas',
-  frmRecycler_u in 'units\frmRecycler_u.pas' {frmRecycle};
+  frmRecycler_u in 'units\frmRecycler_u.pas' {frmRecycle},
+  frmAdmin_u in 'units\frmAdmin_u.pas' {frmAdmin};
 
 {$R *.res}
 
@@ -22,5 +23,6 @@ begin
   Application.CreateForm(TfrmStudent, frmStudent);
   Application.CreateForm(TfrmTeacher, frmTeacher);
   Application.CreateForm(TfrmRecycle, frmRecycle);
+  Application.CreateForm(TfrmAdmin, frmAdmin);
   Application.Run;
 end.

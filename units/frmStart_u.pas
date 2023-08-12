@@ -25,11 +25,13 @@ type
     cHistory: TChart;
     sHistory: TLineSeries;
     Recycle: TAction;
+    Admin: TAction;
     procedure bbnLoginClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure StudentExecute(Sender: TObject);
     procedure TeacherExecute(Sender: TObject);
     procedure RecycleExecute(Sender: TObject);
+    procedure AdminExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -49,7 +51,8 @@ implementation
 
 {$R *.dfm}
 
-uses frmLogin_u, dmRecycle_u, frmTeacher_u, frmStudent_u, frmRecycler_u;
+uses frmLogin_u, dmRecycle_u, frmTeacher_u, frmStudent_u, frmRecycler_u,
+  frmAdmin_u;
 
 //DEBUG ONLY
 procedure TfrmStart.StudentExecute(Sender: TObject);
@@ -65,6 +68,12 @@ end;
 procedure TfrmStart.RecycleExecute(Sender: TObject);
 begin
 frmRecycle.ShowModal;
+end;
+
+// DEBUG ONLY
+procedure TfrmStart.AdminExecute(Sender: TObject);
+begin
+frmAdmin.ShowModal;
 end;
 
 procedure TfrmStart.bbnLoginClick(Sender: TObject);

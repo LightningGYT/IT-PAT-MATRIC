@@ -67,6 +67,7 @@ type
   end;
 
   { Other functions }
+function GetAllUsers: TDictionary<String, TUser>;
 function Login(sUsername, sPassword: String): TUser;
 function PrepPassword(sPassword, sSalt: String): String;
 function FindStudent(sStudentID: String): String;overload;
@@ -76,6 +77,11 @@ function FindTeacher(sTeacherID: String): String;
 implementation
 
 uses dmRecycle_u, frmLogin_u;
+
+function GetAllUsers: TDictionary<String, TUser>;
+begin
+
+end;
 
 function FindStudent(sFirstname, sSurname:String):String;
 begin
