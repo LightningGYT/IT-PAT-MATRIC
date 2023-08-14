@@ -67,30 +67,168 @@ type
   end;
 
   { Other functions }
-function GetAllUsers: TDictionary<String, TUser>;
 function Login(sUsername, sPassword: String): TUser;
 function PrepPassword(sPassword, sSalt: String): String;
-function FindStudent(sStudentID: String): String;overload;
-function FindStudent(sFirstname, sSurname:String):String;overload;
-function FindTeacher(sTeacherID: String): String;
+function FindStudent(sStudentID: String): String; overload;
+function FindStudent(sFirstname, sSurname: String): String; overload;
+function FindTeacher(sTeacherID: String): String; overload;
+function FindTeacher(sFirstname, sSurname: String): String; overload;
+procedure DeleteStudent(sStudentID: String);
+procedure DeleteTeacher(sTeacherID: String);
+function FindClass(sTeacherID: String): String;
+procedure AddClass(sTeacherID: String; iGrade: integer);
+procedure AddStudent(sFirstname, sSurname:String);
+procedure AddTeacher(sFirstname, sSurname:String;bAdmin:String);
+function AddLogin(sUsername:String):String;
 
 implementation
 
 uses dmRecycle_u, frmLogin_u;
 
-function GetAllUsers: TDictionary<String, TUser>;
+procedure AddClass(sTeacherID: String; iGrade: integer);
+var
+  sUUid: String;
+  uuid: TGUID;
 begin
+
+  CreateGUID(uuid);
+  sUUid := uuid.ToString;
+
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text := 'INSERT INTO CLASS VALUES (:ID , :Grade ,:TEACHERID )';
+    with Parameters do
+    begin
+      ParamByName('ID').Value := sUUid;
+      ParamByName('Grade').Value := iGrade;
+      ParamByName('TEACHERID').Value := sTeacherID;
+    end;
+
+    ExecSQL;
+  end;
 
 end;
 
-function FindStudent(sFirstname, sSurname:String):String;
+function FindClass(sTeacherID: String): String;
 begin
   with dmRecycle.qryRecycle do
   begin
     Active := False;
     SQL.Clear;
 
-    SQL.Text := 'SELECT ID FROM Student WHERE (Student_Name =:FIRSTNAME) AND (Student_Surname =:SURNAME)';
+    SQL.Text := 'SELECT * FROM Class WHERE Teacher_ID =:sTeacherID';
+    Parameters.ParamByName('sTeacherID').Value := sTeacherID;
+
+    Active := True;
+
+    if RecordCount <> 0 then
+    begin
+      Result := FieldByName('ID').AsString;
+      exit;
+    end
+    else
+    begin
+      raise Exception.Create('Class not found');
+    end;
+  end;
+end;
+
+procedure DeleteTeacher(sTeacherID: String);
+begin
+
+end;
+
+function FindTeacher(sFirstname, sSurname: String): String; overload;
+begin
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text :=
+      'SELECT ID FROM Teacher WHERE (Teacher_Name =:FIRSTNAME) AND (Teacher_Surname =:SURNAME)';
+    Parameters.ParamByName('FIRSTNAME').Value := sFirstname;
+    Parameters.ParamByName('SURNAME').Value := sSurname;
+
+    Active := True;
+
+    if RecordCount <> 0 then
+    begin
+      Result := FieldByName('ID').AsString;
+      exit;
+    end
+    else
+    begin
+      raise Exception.Create('Teacher not found');
+    end;
+
+  end;
+end;
+
+procedure DeleteStudent(sStudentID: String);
+var
+  sLoginID: String;
+begin
+
+  // GET LOGIN ID
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text := 'SELECT Login_ID FROM Student WHERE ID =:SID';
+    Parameters.ParamByName('sID').Value := sStudentID;
+
+    Active := True;
+
+    sLoginID := FieldByName('Login_ID').AsString;
+
+  end;
+  // DELETING
+  with dmRecycle.qryRecycle do
+  begin
+    // Delete student
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text := 'DELETE FROM Student WHERE (ID =:SID )';
+    Parameters.ParamByName('SID').Value := sStudentID;
+
+    ExecSQL;
+
+    // Delete Login Info
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text := 'DELETE FROM Login WHERE (ID =:SID )';
+    Parameters.ParamByName('SID').Value := sLoginID;
+
+    ExecSQL;
+
+    // Delete From ClassList
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text := 'DELETE FROM ClassList WHERE (Student_ID =:SID )';
+    Parameters.ParamByName('SID').Value := sStudentID;
+
+    ExecSQL;
+
+  end;
+end;
+
+function FindStudent(sFirstname, sSurname: String): String;
+begin
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text :=
+      'SELECT ID FROM Student WHERE (Student_Name =:FIRSTNAME) AND (Student_Surname =:SURNAME)';
     Parameters.ParamByName('FIRSTNAME').Value := sFirstname;
     Parameters.ParamByName('SURNAME').Value := sSurname;
 
@@ -217,7 +355,7 @@ begin
 
       Result := objUser;
 
-      EXIT;
+      exit;
     end;
 
     Active := False;
@@ -241,7 +379,7 @@ begin
       end;
 
       Result := objUser;
-      EXIT;
+      exit;
     end;
 
   end;

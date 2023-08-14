@@ -29,6 +29,8 @@ type
       : TDictionary<String, integer>; overload;
     function Recycle(sStudentID, sMaterialID: String; iWeight: integer)
       : boolean;
+    procedure DeleteMaterial(sMaterialID: String);
+    procedure AddMaterial(sMaterial: String);
   end;
 
 const
@@ -41,8 +43,30 @@ implementation
 
 uses dmRecycle_u;
 
-// Calculates the amounts recycled for that year by month
+procedure TRecycler.AddMaterial(sMaterial: String);
+var
+  sUUId: String;
+  uuid: TGuid;
+begin
+  CreateGUID(uuid);
+  sUUId := uuid.ToString;
+
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text := 'INSERT INTO Materials VALUES (:ID , :Name )';
+    Parameters.ParamByName('ID').Value := sUUId;
+    Parameters.ParamByName('Name').Value := sMaterial;
+    ExecSQL;
+  end;
+
+  CalcMaterials;
+end;
+
 procedure TRecycler.CalcHistory;
+// Calculates the amounts recycled for that year by month
 var
   wToday: word;
 begin
@@ -129,6 +153,31 @@ constructor TRecycler.Create;
 begin
   CalcMaterials;
   CalcHistory;
+end;
+
+procedure TRecycler.DeleteMaterial(sMaterialID: String);
+begin
+
+  with dmRecycle.qryRecycle do
+  begin
+    // Delete MAterial
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text := 'DELETE FROM Materials WHERE ID =:SID';
+    Parameters.ParamByName('SID').Value := sMaterialID;
+
+    ExecSQL;
+    // Remove Recycling with this material
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text := 'DELETE FROM Recycle WHERE Material_ID =:SID';
+    Parameters.ParamByName('SID').Value := sMaterialID;
+  end;
+
+  CalcMaterials;
+
 end;
 
 function TRecycler.GetByClass(sID: String): TDictionary<String, TMaterial>;
@@ -274,15 +323,15 @@ function TRecycler.Recycle(sStudentID, sMaterialID: String;
   iWeight: integer): boolean;
 var
   dtDate: TDateTime;
-  Uuid: TGuid;
-  sUuid: String;
+  uuid: TGuid;
+  sUUId: String;
 begin
   dtDate := Now;
-  CreateGUID(Uuid);
+  CreateGUID(uuid);
 
-  sUuid := GUIDToString(Uuid);
-  sUuid := sUuid.Replace('{', '');
-  sUuid := sUuid.Replace('}', '');
+  sUUId := GUIDToString(uuid);
+  sUUId := sUUId.Replace('{', '');
+  sUUId := sUUId.Replace('}', '');
 
   with dmRecycle.qryRecycle do
   begin
@@ -293,7 +342,7 @@ begin
       'INSERT INTO Recycle VALUES (:ID , :STUDENTID , :MATERIALID , :DATE , :WEIGHT)';
     with Parameters do
     begin
-      ParamByName('ID').Value := sUuid;
+      ParamByName('ID').Value := sUUId;
       ParamByName('STUDENTID').Value := sStudentID;
       ParamByName('MATERIALID').Value := sMaterialID;
       ParamByName('DATE').Value := dtDate;
