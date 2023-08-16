@@ -4,7 +4,7 @@ object frmStart: TfrmStart
   AutoSize = True
   Caption = 'Recycler'
   ClientHeight = 506
-  ClientWidth = 616
+  ClientWidth = 612
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -26,6 +26,7 @@ object frmStart: TfrmStart
     Padding.Right = 3
     Padding.Bottom = 3
     TabOrder = 0
+    ExplicitHeight = 499
     object cStats: TChart
       AlignWithMargins = True
       Left = 7
@@ -130,6 +131,7 @@ object frmStart: TfrmStart
     Padding.Right = 3
     Padding.Bottom = 3
     TabOrder = 1
+    ExplicitHeight = 499
     object lblWelcom: TLabel
       AlignWithMargins = True
       Left = 14
@@ -168,6 +170,7 @@ object frmStart: TfrmStart
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
+      ExplicitTop = 448
     end
     object bbnLogin: TBitBtn
       AlignWithMargins = True
@@ -190,6 +193,7 @@ object frmStart: TfrmStart
       ShowHint = True
       TabOrder = 1
       OnClick = bbnLoginClick
+      ExplicitTop = 399
     end
   end
   object DEBUGINGREMOVE: TActionList

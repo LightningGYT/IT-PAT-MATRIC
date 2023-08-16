@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="l060igpkw9k_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:frmRecycler_p:clsRecycle_u.TRecycler">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,274,281" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsRecycle_u.TRecycler.fMaterials" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsRecycle_u.TRecycler.fHistory" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsRecycle_u.TRecycler.CalcMaterials()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsRecycle_u.TRecycler.CalcHistory()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsRecycle_u.TRecycler.Create()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsRecycle_u.TRecycler.GetMaterials()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsRecycle_u.TRecycler.GetHistory()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsRecycle_u.TRecycler.GetByStudent(System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsRecycle_u.TRecycler.GetByClass(System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsRecycle_u.TRecycler.GetTopStudents(System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsRecycle_u.TRecycler.GetTopStudents(System.string,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsRecycle_u.TRecycler.Recycle(System.string,System.string,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsRecycle_u.TRecycler.DeleteMaterial(System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsRecycle_u.TRecycler.AddMaterial(System.string)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:frmRecycler_p:clsRecycle_u.TMaterial">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="303,1,110,128" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsRecycle_u.TMaterial.fID" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsRecycle_u.TMaterial.fWieght" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsRecycle_u.TMaterial.fAmount" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:frmRecycler_p:clsRecycle_u.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsRecycle_u.@unitclass.months" />
+    </reference>
+  </view>
+</nodeSet>

@@ -130,6 +130,16 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <None Include="frmRecycler_p.todo"/>
+        <None Include="ModelSupport_frmRecycler_p\default.txaPackage"/>
+        <None Include="ModelSupport_frmRecycler_p\default.txvpck"/>
+        <None Include="ModelSupport_frmRecycler_p\frmRecycler_p\default.txvpck"/>
+        <None Include="ModelSupport_frmRecycler_p\clsUsers_u\default.txvpck"/>
+        <None Include="ModelSupport_frmRecycler_p\clsUsers_u\default.txaPackage"/>
+        <None Include="ModelSupport_frmRecycler_p\dmRecycle_u\default.txvpck"/>
+        <None Include="ModelSupport_frmRecycler_p\dmRecycle_u\default.txaPackage"/>
+        <None Include="ModelSupport_frmRecycler_p\frmRecycler_p\default.txaPackage"/>
+        <None Include="ModelSupport_frmRecycler_p\clsRecycle_u\default.txvpck"/>
+        <None Include="ModelSupport_frmRecycler_p\clsRecycle_u\default.txaPackage"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -152,6 +162,66 @@
                 </Source>
             </Delphi.Personality>
             <Deployment Version="4">
+                <DeployFile LocalName="ModelSupport_frmRecycler_p\clsRecycle_u\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_frmRecycler_p\clsRecycle_u\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_frmRecycler_p\clsUsers_u\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_frmRecycler_p\clsUsers_u\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_frmRecycler_p\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_frmRecycler_p\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_frmRecycler_p\dmRecycle_u\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_frmRecycler_p\dmRecycle_u\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_frmRecycler_p\frmRecycler_p\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_frmRecycler_p\frmRecycler_p\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Win32\Debug\frmRecycler_p.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>frmRecycler_p.exe</RemoteName>
@@ -985,6 +1055,7 @@
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">False</Platform>
             </Platforms>
+            <ModelSupport>True</ModelSupport>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>

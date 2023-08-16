@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="ej00kd416nt_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:frmRecycler_p:clsUsers_u.TUser">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="920,40,116,188" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TUser.LoginID" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TUser.Username" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TUser.ID" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TUser.Name" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TUser.Surname" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TUser.Teacher" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TUser.Admin" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:frmRecycler_p:clsUsers_u.TUserStudent">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="720,280,132,221" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TUserStudent.fUserData" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TUserStudent.fClassID" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TUserStudent.fTeacher" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TUserStudent.Create(clsUsers_u.TUser)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TUserStudent.GetGrade()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TUserStudent.GetID()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TUserStudent.GetName()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TUserStudent.GetSurname()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TUserStudent.GetTeacher()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TUserStudent.toString()" />
+      <reference referencedUin="delphi:l_ast:src:frmRecycler_p:clsUsers_u.TUserStudent.fUserData">
+        <property name="sourceAnchor" value="852,301" />
+        <property name="targetAnchor" value="920,210" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="delphi:e_class:src:frmRecycler_p:clsUsers_u.TStudent">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="26,217,109,128" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TStudent.ID" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TStudent.Name" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TStudent.Surname" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:frmRecycler_p:clsUsers_u.TUserTeacher">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="680,40,129,161" />
+      <property name="location_set_by_user" value="True" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TUserTeacher.fUserData" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TUserTeacher.fClass" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TUserTeacher.Create(clsUsers_u.TUser)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TUserTeacher.GetClassID()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TUserTeacher.GetAdmin()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TUserTeacher.toString()" />
+      <reference referencedUin="delphi:l_ast:src:frmRecycler_p:clsUsers_u.TUserTeacher.fUserData">
+        <property name="sourceAnchor" value="809,120" />
+        <property name="targetAnchor" value="920,119" />
+        <property name="bendpoints" value="" />
+      </reference>
+      <reference referencedUin="delphi:l_ast:src:frmRecycler_p:clsUsers_u.TUserTeacher.fClass">
+        <property name="sourceAnchor" value="680,191" />
+        <property name="targetAnchor" value="530,191" />
+        <property name="bendpoints" value="" />
+      </reference>
+    </reference>
+    <reference referencedUin="delphi:e_class:src:frmRecycler_p:clsUsers_u.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.Login(System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.PrepPassword(System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.FindStudent(System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.FindStudent(System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.FindTeacher(System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.FindTeacher(System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.DeleteStudent(System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.DeleteTeacher(System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.FindClass(System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.AddClass(System.string,System.Integer)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.AddStudent(System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.AddTeacher(System.string,System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.AddLogin(System.string)" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:frmRecycler_p:clsUsers_u.TClass">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="296,181,234,176" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TClass.fClassID" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TClass.fStudents" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TClass.fGrade" />
+      <reference referencedUin="delphi:e_field:src:frmRecycler_p:clsUsers_u.TClass.fSize" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TClass.Create(System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TClass.GetGrade()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.TClass.GetSize()" />
+    </reference>
+  </view>
+</nodeSet>
