@@ -8,7 +8,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, Vcl.StdCtrls,
   Vcl.ComCtrls, VclTee.TeEngine, VclTee.Series, VclTee.TeeProcs, VclTee.Chart,
   Vcl.ExtCtrls, Vcl.Buttons, clsRecycle_u, Generics.Collections, System.Actions,
-  Vcl.ActnList, clsUsers_u;
+  Vcl.ActnList, clsUsers_u, Vcl.BaseImageCollection, Vcl.ImageCollection,
+  System.ImageList, Vcl.ImgList, Vcl.VirtualImageList, Vcl.VirtualImage;
 
 type
   TfrmStart = class(TForm)
@@ -26,12 +27,15 @@ type
     sHistory: TLineSeries;
     Recycle: TAction;
     Admin: TAction;
+    viIcons: TVirtualImageList;
+    icIcons: TImageCollection;
     procedure bbnLoginClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure StudentExecute(Sender: TObject);
     procedure TeacherExecute(Sender: TObject);
     procedure RecycleExecute(Sender: TObject);
     procedure AdminExecute(Sender: TObject);
+    procedure VirtualImage1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -64,6 +68,11 @@ end;
 procedure TfrmStart.TeacherExecute(Sender: TObject);
 begin
   frmTeacher.ShowModal;
+end;
+
+procedure TfrmStart.VirtualImage1Click(Sender: TObject);
+begin
+
 end;
 
 // DEBUG ONLY

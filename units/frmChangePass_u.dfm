@@ -1,6 +1,6 @@
 object frmChangePass: TfrmChangePass
-  Left = 0
-  Top = 0
+  Left = 776
+  Top = 415
   BorderStyle = bsDialog
   Caption = 'Change Password'
   ClientHeight = 193
@@ -11,6 +11,7 @@ object frmChangePass: TfrmChangePass
   Font.Height = -14
   Font.Name = 'Consolas'
   Font.Style = []
+  Position = poDesigned
   TextHeight = 17
   object lblMessage: TLabel
     AlignWithMargins = True
@@ -42,6 +43,7 @@ object frmChangePass: TfrmChangePass
     PasswordChar = '*'
     TabOrder = 0
     TextHint = 'New password'
+    ExplicitWidth = 299
   end
   object edtPass2: TEdit
     AlignWithMargins = True
@@ -58,6 +60,7 @@ object frmChangePass: TfrmChangePass
     PasswordChar = '*'
     TabOrder = 1
     TextHint = 'Confirm Password'
+    ExplicitWidth = 299
   end
   object bbnChangePass: TBitBtn
     AlignWithMargins = True
@@ -71,10 +74,13 @@ object frmChangePass: TfrmChangePass
     Margins.Bottom = 8
     Align = alBottom
     Caption = '&Change password'
+    ImageIndex = 4
+    ImageName = 'key'
+    Images = frmStart.viIcons
     TabOrder = 2
     OnClick = bbnChangePassClick
-    ExplicitLeft = 13
-    ExplicitTop = 146
+    ExplicitTop = 150
+    ExplicitWidth = 299
   end
   object cbxVissPass: TCheckBox
     AlignWithMargins = True
@@ -90,5 +96,6 @@ object frmChangePass: TfrmChangePass
     Caption = 'Show Password'
     TabOrder = 3
     OnClick = cbxVissPassClick
+    ExplicitWidth = 295
   end
 end

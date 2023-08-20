@@ -29,7 +29,7 @@ implementation
 
 {$R *.dfm}
 
-uses clsUsers_u;
+uses clsUsers_u, frmStart_u;
 { TfrmChangePass }
 
 procedure TfrmChangePass.bbnChangePassClick(Sender: TObject);
