@@ -31,6 +31,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bbnLogOutClick(Sender: TObject);
+    procedure bbnAdminClick(Sender: TObject);
   private
     objTeacher: TUserTeacher;
   public
@@ -44,12 +45,18 @@ implementation
 
 {$R *.dfm}
 
-uses frmStart_u, clsRecycle_u;
+uses frmStart_u, clsRecycle_u, frmAdmin_u;
 
 { TfrmTeacher }
 
+procedure TfrmTeacher.bbnAdminClick(Sender: TObject);
+begin
+  frmAdmin.ShowModal;
+end;
+
 procedure TfrmTeacher.bbnLogOutClick(Sender: TObject);
 begin
+  LogOut;
   Close;
 end;
 
@@ -89,6 +96,7 @@ begin
   end;
 
   // Get Top Students
+try
   dictTopStudents := objRecycle.GetTopStudents(objTeacher.GetClassID());
 
   with redLeaderBoard.Lines do
@@ -101,6 +109,17 @@ begin
     end;
 
   end;
+except
+  on ENoStudent do
+  begin
+    with redLeaderBoard.Lines do
+    begin
+      Clear;
+      Add('NO STUDENTS')
+    end;
+  end;
+
+end;
 end;
 
 procedure TfrmTeacher.setTeacher(Teacher: TUserTeacher);

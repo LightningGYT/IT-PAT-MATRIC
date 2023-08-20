@@ -38,7 +38,7 @@ implementation
 
 {$R *.dfm}
 
-uses frmStart_u;
+uses frmStart_u, frmChangePass_u;
 { TfrmLogin }
 
 procedure TfrmLogin.bbnLoginClick(Sender: TObject);
@@ -59,6 +59,13 @@ begin
     objUser := Login(sUsername, sPassword);
   Except
     EXIT;
+  end;
+
+  SaveLogin(sUsername, sPassword);
+
+  if objUser.changePass then
+  begin
+    frmChangePass.ChangePassword(objUser.LoginID);
   end;
 
   if objUser.Teacher then

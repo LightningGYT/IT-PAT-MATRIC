@@ -10,7 +10,8 @@ uses
   frmTeacher_u in 'units\frmTeacher_u.pas' {frmTeacher},
   clsRecycle_u in 'units\clsRecycle_u.pas',
   frmRecycler_u in 'units\frmRecycler_u.pas' {frmRecycle},
-  frmAdmin_u in 'units\frmAdmin_u.pas' {frmAdmin};
+  frmAdmin_u in 'units\frmAdmin_u.pas' {frmAdmin},
+  frmChangePass_u in 'units\frmChangePass_u.pas' {frmChangePass};
 
 {$R *.res}
 
@@ -24,5 +25,6 @@ begin
   Application.CreateForm(TfrmTeacher, frmTeacher);
   Application.CreateForm(TfrmRecycle, frmRecycle);
   Application.CreateForm(TfrmAdmin, frmAdmin);
+  Application.CreateForm(TfrmChangePass, frmChangePass);
   Application.Run;
 end.

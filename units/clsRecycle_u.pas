@@ -41,7 +41,7 @@ implementation
 
 { TRecycler }
 
-uses dmRecycle_u;
+uses dmRecycle_u, clsUsers_u;
 
 procedure TRecycler.AddMaterial(sMaterial: String);
 var
@@ -305,6 +305,11 @@ begin
 
     Active := True;
 
+    if RecordCount = 0 then
+    begin
+      raise ENoStudent.Create('No Students found');
+    end;
+
     First;
     for I := 1 to Amount do
     begin
@@ -387,6 +392,7 @@ begin
     begin
       dictStudents.Add(FieldByName('Student_Name').AsString + ' ' +
         FieldByName('Student_Surname').AsString, FieldByName('tot').AsInteger);
+
       Next;
     end;
 

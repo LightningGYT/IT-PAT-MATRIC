@@ -2,9 +2,15 @@ unit clsUsers_u;
 
 interface
 
-uses Hash, SysUtils, Generics.Collections, Vcl.Dialogs;
+uses Hash, SysUtils, Generics.Collections, Vcl.Dialogs, System.JSON;
 
 type
+  { EXCEPTIONS }
+  ENoClass = class(Exception);
+  ENoTeacher = class(Exception);
+  ENoStudent = class(Exception);
+  EPasswordError = class(Exception);
+
   { Records }
   TUser = record
     LoginID: String;
@@ -13,6 +19,7 @@ type
     ID: String;
     Name: String;
     Surname: String;
+    changePass: boolean;
 
     case Teacher: boolean of
       True:
@@ -67,23 +74,263 @@ type
   end;
 
   { Other functions }
-function Login(sUsername, sPassword: String): TUser;
+  // Passwords
+procedure changePass(sPass: String; sLoginID: String);
+procedure RequestPassChange(sLoginID: String);
+function Encrypt(sInput: String): String;
+function Decrypt(sInput: String): String;
 function PrepPassword(sPassword, sSalt: String): String;
+function GenSalt(iLength: integer): String;
+
+// Previous User
+procedure SaveLogin(sUsername, sPassword: String);
+function CheckPrev: boolean;
+procedure LogOut;
+
+// Login
+function Login(sUsername, sPassword: String): TUser;
+function AddLogin(sUsername: String): String;
+function LoginExists(sUsername: String): boolean;
+
+// Student
 function FindStudent(sStudentID: String): String; overload;
 function FindStudent(sFirstname, sSurname: String): String; overload;
+procedure DeleteStudent(sStudentID: String);
+function FindStudentLogin(sFirstname, sSurname: String): String;
+function AddStudent(sFirstname, sSurname: String): TDictionary<String, String>;
+procedure AddToClass(sStudentID, sClassID: String);
+
+// Teacher
 function FindTeacher(sTeacherID: String): String; overload;
 function FindTeacher(sFirstname, sSurname: String): String; overload;
-procedure DeleteStudent(sStudentID: String);
-procedure DeleteTeacher(sTeacherID: String);
+function FindTeacherLogin(sFirstname, sSurname: String): String;
+function AddTeacher(sFirstname, sSurname: String; bAdmin: boolean)
+  : TDictionary<String, String>;
+
+// Class
 function FindClass(sTeacherID: String): String;
 procedure AddClass(sTeacherID: String; iGrade: integer);
-procedure AddStudent(sFirstname, sSurname:String);
-procedure AddTeacher(sFirstname, sSurname:String;bAdmin:String);
-function AddLogin(sUsername:String):String;
 
 implementation
 
-uses dmRecycle_u, frmLogin_u;
+uses dmRecycle_u, frmLogin_u, frmStart_u, frmChangePass_u;
+
+{ Password }
+{$REGION$ Password}
+
+function GenSalt(iLength: integer): String;
+var
+  sSalt: String;
+  I: integer;
+begin
+  Randomize;
+  for I := 1 to iLength do
+  begin
+    sSalt := sSalt + Chr(Random(122 - 97) + 97);
+  end;
+
+  Result := sSalt;
+end;
+
+procedure RequestPassChange(sLoginID: String);
+begin
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+    SQL.Text := 'UPDATE Login SET ChangePass =:CHANGEPASS WHERE ID =:LOGINID';
+    Parameters.ParamByName('CHANGEPASS').Value := True;
+    Parameters.ParamByName('LOGINID').Value := sLoginID;
+    ExecSQL;
+  end;
+end;
+
+procedure changePass(sPass: String; sLoginID: String);
+var
+  sIn: String;
+  sSalt: String;
+begin
+  sSalt := GenSalt(4);
+
+  sIn := PrepPassword(sPass, sSalt);
+
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+
+    SQL.Add('UPDATE Login SET ');
+    SQL.Add('Password=' + QuotedStr(sIn));
+    SQL.Add(', Salt=' + QuotedStr(sSalt));
+    SQL.Add(', ChangePass=' + False.toString());
+    SQL.Add(' WHERE ID = ' + QuotedStr(sLoginID));
+
+    ExecSQL;
+
+  end;
+
+end;
+
+function Encrypt(sInput: String): String;
+var
+  cChar: char;
+  sOut: String;
+begin
+  sOut := '';
+  for cChar in sInput do
+  begin
+    sOut := sOut + Chr(ord(cChar) + 7);
+  end;
+
+  Result := sOut;
+
+end;
+
+function Decrypt(sInput: String): String;
+var
+  cChar: char;
+  sOut: String;
+begin
+  sOut := '';
+  sInput := sInput.Replace('"', '');
+  for cChar in sInput do
+  begin
+    sOut := sOut + Chr(ord(cChar) - 7);
+  end;
+  Result := sOut;
+
+end;
+
+function PrepPassword(sPassword, sSalt: String): String;
+var
+  sPrep: String;
+begin
+  sPrep := sSalt + sPassword + sSalt;
+
+  sPrep := THashSHA2.GetHashString(sPrep, THashSHA2.TSHA2Version.SHA512);
+
+  Result := sPrep;
+end;
+
+{$ENDREGION$ Password}
+{ Previous User }
+{$REGION Previous User }
+
+procedure LogOut;
+var
+  tPrev: TextFile;
+begin
+  AssignFile(tPrev, './data/prev.json');
+  Rewrite(tPrev);
+  Write(tPrev, '{"username":"","password":"","loggedIn":false}');
+  closeFile(tPrev);
+end;
+
+procedure SaveLogin(sUsername, sPassword: String);
+var
+  objJson: TJSONObject;
+  tPrev: TextFile;
+begin
+  objJson := TJSONObject.Create;
+
+  sPassword := Encrypt(sPassword);
+  with objJson do
+  begin
+    AddPair(TJSONPair.Create(TJSONString.Create('username'),
+      TJSONString.Create(sUsername)));
+    AddPair(TJSONPair.Create(TJSONString.Create('password'),
+      TJSONString.Create(sPassword)));
+    AddPair(TJSONPair.Create(TJSONString.Create('loggedIn'),
+      TJSONBool.Create(True)));
+  end;
+
+  AssignFile(tPrev, './data/prev.json');
+  Rewrite(tPrev);
+  Write(tPrev, objJson.toString);
+  closeFile(tPrev);
+
+end;
+
+function CheckPrev: boolean;
+var
+  objUser: TUser;
+  tPrev: TextFile;
+  sLines, sLine: String;
+  objJson: TJSONObject;
+  bLoggedIn: boolean;
+  sPass: string;
+begin
+  // Get data from prev.json
+  AssignFile(tPrev, './data/prev.json');
+  try
+    Reset(tPrev);
+  except
+    on E: EFileNotFoundException do
+    begin
+      Rewrite(tPrev, './data/prev.json');
+      closeFile(tPrev);
+      Reset(tPrev);
+    end;
+  end;
+  sLines := '';
+  while not Eof(tPrev) do
+  begin
+    Readln(tPrev, sLine);
+    sLines := sLines + sLine;
+  end;
+  closeFile(tPrev);
+
+  // Json stuff
+  objJson := nil;
+  try
+    objJson := TJSONObject.ParseJSONValue(TEncoding.UTF8.GetBytes(sLines), 0)
+      as TJSONObject;
+
+    bLoggedIn := objJson.GetValue('loggedIn').AsType<boolean>;
+    if bLoggedIn then
+    begin
+      sPass := objJson.GetValue('password').toString;
+      sPass := Decrypt(sPass);
+
+      try
+        objUser := Login(objJson.GetValue('username').toString.Replace('"',
+          ''), sPass);
+      Except
+        Result := False;
+        EXIT;
+      end;
+
+    end
+  finally
+
+    objJson.Free;
+  end;
+
+  if bLoggedIn then
+  begin
+
+    if objUser.changePass then
+    begin
+      frmChangePass.ChangePassword(objUser.LoginID);
+    end;
+
+    if objUser.Teacher then
+    begin
+      frmStart.LoginTeacher(objUser);
+    end
+    else
+    begin
+      frmStart.LoginStudent(objUser);
+    end;
+  end;
+
+  Result := bLoggedIn;
+
+end;
+
+{$ENDREGION Previous User }
+{ Class }
+{$REGION Class}
 
 procedure AddClass(sTeacherID: String; iGrade: integer);
 var
@@ -92,7 +339,9 @@ var
 begin
 
   CreateGUID(uuid);
-  sUUid := uuid.ToString;
+  sUUid := uuid.toString;
+  sUUid := sUUid.Replace('{', '');
+  sUUid := sUUid.Replace('}', '');
 
   with dmRecycle.qryRecycle do
   begin
@@ -127,18 +376,107 @@ begin
     if RecordCount <> 0 then
     begin
       Result := FieldByName('ID').AsString;
-      exit;
+      EXIT;
     end
     else
     begin
-      raise Exception.Create('Class not found');
+      raise ENoClass.Create('Class not found');
     end;
   end;
 end;
 
-procedure DeleteTeacher(sTeacherID: String);
-begin
+{$ENDREGION Class}
+{ Teacher }
+{$REGION Teacher}
 
+function AddTeacher(sFirstname, sSurname: String; bAdmin: boolean)
+  : TDictionary<String, String>;
+var
+  sUsername, sLoginID, sUUid: String;
+  iAtempts: integer;
+  uuid: TGUID;
+  dictTeacher: TDictionary<String, String>;
+  bComplete: boolean;
+begin
+  // uuid
+  CreateGUID(uuid);
+  sUUid := uuid.toString;
+  sUUid := sUUid.Replace('{', '');
+  sUUid := sUUid.Replace('}', '');
+
+  dictTeacher := TDictionary<String, String>.Create;
+
+  iAtempts := 0;
+  // Username
+  bComplete := False;
+  while not bComplete do
+  begin
+    bComplete := True;
+    if iAtempts = 0 then
+    begin
+      sUsername := sFirstname[1] + sSurname;
+    end
+    else
+    begin
+      sUsername := Format('%s%s%.*d', [sFirstname[1], sSurname, 3, iAtempts]);
+    end;
+
+    sUsername := sUsername.Replace(' ', '');
+    sUsername := sUsername.ToLower;
+
+    if LoginExists(sUsername) then
+    begin
+      Inc(iAtempts);
+      bComplete := False;
+    end;
+  end;
+
+  sLoginID := AddLogin(sUsername);
+
+  // Add to DB
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+    SQL.Text :=
+      'INSERT INTO Teacher (ID, Teacher_Name, Teacher_Surname, Login_ID, Admin) VALUES (:ID ,:FIRSTNAME ,:SURNAME ,:LOGINID ,:ADMIN)';
+    with Parameters do
+    begin
+      ParamByName('ID').Value := sUUid;
+      ParamByName('FIRSTNAME').Value := sFirstname;
+      ParamByName('SURNAME').Value := sSurname;
+      ParamByName('LOGINID').Value := sLoginID;
+      ParamByName('ADMIN').Value := bAdmin;
+    end;
+    ExecSQL;
+  end;
+
+  dictTeacher.Add('Username', sUsername);
+  dictTeacher.Add('ID', sUUid);
+  Result := dictTeacher;
+
+end;
+
+function FindTeacherLogin(sFirstname, sSurname: String): String;
+begin
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+    SQL.Text :=
+      'SELECT Login_ID FROM Teacher WHERE Teacher_Name =:FIRSTNAME AND Teacher_Surname =:SURNAME';
+    Parameters.ParamByName('FIRSTNAME').Value := sFirstname;
+    Parameters.ParamByName('SURNAME').Value := sSurname;
+
+    Active := True;
+
+    if RecordCount = 0 then
+    begin
+      raise ENoTeacher.Create('Teacher not found');
+    end;
+
+    Result := FieldByName('Login_ID').AsString;
+  end;
 end;
 
 function FindTeacher(sFirstname, sSurname: String): String; overload;
@@ -155,16 +493,154 @@ begin
 
     Active := True;
 
-    if RecordCount <> 0 then
+    if RecordCount = 0 then
     begin
-      Result := FieldByName('ID').AsString;
-      exit;
+      raise ENoTeacher.Create('Teacher not found');
+    end;
+
+    Result := FieldByName('ID').AsString;
+
+  end;
+end;
+
+function FindTeacher(sTeacherID: String): String;
+begin
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+
+    SQL.Text :=
+      'SELECT Teacher_Name, Teacher_Surname FROM Student WHERE ID =:TEACHERID';
+    Parameters.ParamByName('TEACHERID').Value := sTeacherID;
+
+    Active := True;
+
+    if RecordCount = 0 then
+    begin
+      raise ENoTeacher.Create('Teacher not found');
+    end;
+
+    Result := FieldByName('Teacher_Name').AsString + ' ' +
+      FieldByName('Teacher_Surname').AsString;
+  end;
+end;
+
+{$ENDREGION Teacher}
+{ Student }
+{$REGION Student}
+
+procedure AddToClass(sStudentID, sClassID: String);
+var
+  uuid: TGUID;
+  sUUid: String;
+begin
+  // UUID
+  CreateGUID(uuid);
+  sUUid := uuid.toString;
+  sUUid := sUUid.Replace('{', '');
+  sUUid := sUUid.Replace('}', '');
+
+  // Insert into DB
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+    SQL.Text :=
+      'INSERT INTO ClassList (ID, Class_Id, Student_ID) VALUES (:ID ,:CLASSID ,:STUDENTID )';
+    with Parameters do
+    begin
+      ParamByName('ID').Value := sUUid;
+      ParamByName('CLASSID').Value := sClassID;
+      ParamByName('STUDENTID').Value := sStudentID;
+    end;
+
+    ExecSQL;
+  end;
+
+end;
+
+function AddStudent(sFirstname, sSurname: String): TDictionary<String, String>;
+var
+  sUsername, sLoginID, sUUid: String;
+  iAtempts: integer;
+  uuid: TGUID;
+  dictOut: TDictionary<String, String>;
+  bComplete: boolean;
+begin
+  // uuid
+  CreateGUID(uuid);
+  sUUid := uuid.toString;
+  sUUid := sUUid.Replace('{', '');
+  sUUid := sUUid.Replace('}', '');
+
+  iAtempts := 0;
+
+  dictOut := TDictionary<String, String>.Create;
+  bComplete := False;
+  while not bComplete do
+  begin
+    bComplete := True;
+    // Username gen
+    if iAtempts = 0 then
+    begin
+      sUsername := sFirstname + '.' + sSurname;
     end
     else
     begin
-      raise Exception.Create('Teacher not found');
+      sUsername := Format('%s.%s%.*d', [sFirstname, sSurname, 3, iAtempts]);
     end;
 
+    sUsername := sUsername.Replace(' ', '');
+    sUsername := sUsername.ToLower;
+
+    if LoginExists(sUsername) then
+    begin
+      Inc(iAtempts);
+      bComplete := False;
+    end;
+  end;
+
+  sLoginID := AddLogin(sUsername);
+
+  // add to db
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+    SQL.Text :=
+      'INSERT INTO Student (ID, Student_Name, Student_Surname, Login_ID) VALUES (:ID ,:FIRSTNAME ,:SURNAME ,:LOGINID)';
+    with Parameters do
+    begin
+      ParamByName('ID').Value := sUUid;
+      ParamByName('FIRSTNAME').Value := sFirstname;
+      ParamByName('SURNAME').Value := sSurname;
+      ParamByName('LOGINID').Value := sLoginID;
+    end;
+    ExecSQL;
+  end;
+
+  dictOut.Add('Username', sUsername);
+  dictOut.Add('ID', sUUid);
+
+  Result := dictOut;
+
+end;
+
+function FindStudentLogin(sFirstname, sSurname: String): String;
+begin
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+    SQL.Text :=
+      'SELECT Login_ID FROM Student WHERE Student_Name =:FIRSTNAME AND Student_Surname =:SURNAME';
+    Parameters.ParamByName('FIRSTNAME').Value := sFirstname;
+    Parameters.ParamByName('SURNAME').Value := sSurname;
+
+    Active := True;
+
+    Result := FieldByName('Login_ID').AsString;
   end;
 end;
 
@@ -237,7 +713,7 @@ begin
     if RecordCount <> 0 then
     begin
       Result := FieldByName('ID').AsString;
-      exit;
+      EXIT;
     end
     else
     begin
@@ -265,33 +741,66 @@ begin
   end;
 end;
 
-function FindTeacher(sTeacherID: String): String;
+{$ENDREGION Student}
+{ Login }
+{$REGION Login}
+
+function LoginExists(sUsername: String): boolean;
 begin
   with dmRecycle.qryRecycle do
   begin
     Active := False;
     SQL.Clear;
-
-    SQL.Text :=
-      'SELECT Teacher_Name, Teacher_Surname FROM Student WHERE ID =:TEACHERID';
-    Parameters.ParamByName('TEACHERID').Value := sTeacherID;
-
+    SQL.Text := 'SELECT * FROM Login WHERE Username =:USERNAME';
+    Parameters.ParamByName('USERNAME').Value := sUsername;
     Active := True;
 
-    Result := FieldByName('Teacher_Name').AsString + ' ' +
-      FieldByName('Teacher_Surname').AsString;
+    if RecordCount = 0 then
+    begin
+      Result := False;
+    end
+    else
+      Result := True;
+
   end;
 end;
 
-function PrepPassword(sPassword, sSalt: String): String;
+function AddLogin(sUsername: String): String;
+const
+  DEFUALTPASSWORD = 'T4mpP@ssw0rd';
 var
-  sPrep: String;
+  uuid: TGUID;
+  sUUid, sSalt, sPassword: String;
 begin
-  sPrep := sSalt + sPassword + sSalt;
+  // Creation of uuid
+  CreateGUID(uuid);
+  sUUid := uuid.toString;
+  sUUid := sUUid.Replace('{', '');
+  sUUid := sUUid.Replace('}', '');
 
-  sPrep := THashSHA2.GetHashString(sPrep, THashSHA2.TSHA2Version.SHA512);
+  // Password
+  sSalt := GenSalt(4);
+  sPassword := PrepPassword(DEFUALTPASSWORD, sSalt);
 
-  Result := sPrep;
+  with dmRecycle.qryRecycle do
+  begin
+    Active := False;
+    SQL.Clear;
+    SQL.Text :=
+      'INSERT INTO Login VALUES (:ID, :USERNAME, :PASSWORD, :SALT, :CHANGEPASS)';
+    with Parameters do
+    begin
+      ParamByName('ID').Value := sUUid;
+      ParamByName('USERNAME').Value := sUsername;
+      ParamByName('PASSWORD').Value := sPassword;
+      ParamByName('SALT').Value := sSalt;
+      ParamByName('CHANGEPASS').Value := True;
+    end;
+
+    ExecSQL;
+  end;
+
+  Result := sUUid;
 end;
 
 function Login(sUsername, sPassword: String): TUser;
@@ -313,6 +822,8 @@ begin
 
     objUser.LoginID := dmRecycle.qryRecycle.FieldByName('ID').AsString;
     objUser.Username := dmRecycle.qryRecycle.FieldByName('Username').AsString;
+    objUser.changePass := dmRecycle.qryRecycle.FieldByName('ChangePass')
+      .AsBoolean;
 
     sPass := dmRecycle.qryRecycle.FieldByName('Password').AsString;
     sSalt := dmRecycle.qryRecycle.FieldByName('Salt').AsString;
@@ -355,7 +866,7 @@ begin
 
       Result := objUser;
 
-      exit;
+      EXIT;
     end;
 
     Active := False;
@@ -379,15 +890,15 @@ begin
       end;
 
       Result := objUser;
-      exit;
+      EXIT;
     end;
 
   end;
 
 end;
 
+{$ENDREGION Login}
 { TStudent }
-
 {$REGION$ TStudent}
 
 constructor TUserStudent.Create(uUser: TUser);
@@ -505,7 +1016,6 @@ end;
 
 {$ENDREGION$ TStudent}
 { TUserTeacher }
-
 {$REGION$ TUserTeacher }
 
 constructor TUserTeacher.Create(uUser: TUser);
@@ -575,7 +1085,7 @@ begin
     Active := True;
 
     First;
-    while not EOF do
+    while not Eof do
     begin
       objStudent.ID := FieldByName('ID').AsString;
       objStudent.Name := FieldByName('Student_Name').AsString;

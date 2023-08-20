@@ -2,8 +2,8 @@ object frmTeacher: TfrmTeacher
   Left = 0
   Top = 0
   Caption = 'Teacher'
-  ClientHeight = 498
-  ClientWidth = 596
+  ClientHeight = 497
+  ClientWidth = 602
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -18,10 +18,9 @@ object frmTeacher: TfrmTeacher
     Left = 3
     Top = 3
     Width = 374
-    Height = 492
+    Height = 491
     Align = alLeft
     TabOrder = 0
-    ExplicitHeight = 491
     object pnlStudents: TPanel
       AlignWithMargins = True
       Left = 4
@@ -50,6 +49,7 @@ object frmTeacher: TfrmTeacher
         object sRecycled: TPieSeries
           HoverElement = []
           Marks.Visible = False
+          Marks.Tail.Margin = 2
           Title = 'sRecycled'
           XValues.Order = loAscending
           YValues.Name = 'Pie'
@@ -86,7 +86,7 @@ object frmTeacher: TfrmTeacher
           AlignWithMargins = True
           Left = 4
           Top = 4
-          Width = 350
+          Width = 132
           Height = 23
           Align = alTop
           Alignment = taCenter
@@ -97,7 +97,6 @@ object frmTeacher: TfrmTeacher
           Font.Name = 'Consolas'
           Font.Style = [fsBold, fsUnderline]
           ParentFont = False
-          ExplicitWidth = 132
         end
         object redLeaderBoard: TRichEdit
           AlignWithMargins = True
@@ -119,10 +118,9 @@ object frmTeacher: TfrmTeacher
     Left = 383
     Top = 3
     Width = 210
-    Height = 492
+    Height = 491
     Align = alLeft
     TabOrder = 1
-    ExplicitHeight = 491
     object pnlTeacher: TPanel
       AlignWithMargins = True
       Left = 4
@@ -135,7 +133,7 @@ object frmTeacher: TfrmTeacher
         AlignWithMargins = True
         Left = 4
         Top = 4
-        Width = 194
+        Width = 98
         Height = 31
         Align = alTop
         Alignment = taCenter
@@ -146,7 +144,6 @@ object frmTeacher: TfrmTeacher
         Font.Name = 'Consolas'
         Font.Style = []
         ParentFont = False
-        ExplicitWidth = 98
       end
       object redSummary: TRichEdit
         AlignWithMargins = True
@@ -209,7 +206,7 @@ object frmTeacher: TfrmTeacher
         Enabled = False
         TabOrder = 2
         Visible = False
-        ExplicitTop = 99
+        OnClick = bbnAdminClick
       end
     end
   end

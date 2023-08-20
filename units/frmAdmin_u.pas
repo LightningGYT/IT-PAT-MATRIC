@@ -36,7 +36,6 @@ type
     edtAddSurname: TEdit;
     rgType: TRadioGroup;
     bbnAdd: TBitBtn;
-    bbnRetry: TBitBtn;
     pnlMaterials: TPanel;
     lbMaterials: TListBox;
     bbnDeleteMaterial: TBitBtn;
@@ -54,6 +53,8 @@ type
     procedure edtTeacherFirstNameChange(Sender: TObject);
     procedure bbnAddClassClick(Sender: TObject);
     procedure bbnCloseClick(Sender: TObject);
+    procedure bbnPassChangeClick(Sender: TObject);
+    procedure bbnAddClick(Sender: TObject);
 
   private
     // Other vars
@@ -72,6 +73,8 @@ type
     procedure RemoveDynamics;
     // Other func/procs
     procedure UpMaterials;
+    procedure AddTeacher;
+    procedure AddStudent;
   public
     { Public declarations }
   end;
@@ -85,35 +88,169 @@ implementation
 
 uses frmStart_u;
 
+procedure TfrmAdmin.AddStudent;
+var
+  sFirstname, sSurname, sUsername, sID, sTeacherFirst, sTeacherSur, sTeacherID,
+    sClassID: String;
+  dictStudent: TDictionary<String, String>;
+begin
+  // Student's Details
+  sFirstname := edtAddFirstname.Text;
+  sFirstname := sFirstname.Trim;
+  sSurname := edtAddSurname.Text;
+  sSurname := sSurname.Trim;
+
+  // Teacher's Details
+  sTeacherFirst := edtNewStudentTeacherFirst.Text;
+  sTeacherFirst := sTeacherFirst.Trim;
+  sTeacherSur := edtNewStudentTeacherSur.Text;
+  sTeacherSur := sTeacherSur.Trim;
+
+  if (sFirstname = '') OR (sSurname = '') OR (sTeacherFirst = '') OR
+    (sTeacherSur = '') then
+  begin
+    MessageDlg('Please enter all details', TMsgDlgType.mtWarning, [mbOK], 1);
+    exit;
+  end;
+
+  try
+    sTeacherID := clsUsers_u.FindTeacher(sTeacherFirst, sTeacherSur);
+  except
+    on E: ENoTeacher do
+    begin
+      MessageDlg('There is No Teacher with that name', TMsgDlgType.mtError,
+        [mbOK], 1);
+      exit;
+    end;
+  end;
+
+  try
+    sClassID := clsUsers_u.FindClass(sTeacherID);
+  except
+    on E: ENoClass do
+    begin
+      MessageDlg(Format('%s %s does not have a class',
+        [sTeacherFirst, sTeacherSur]), mtWarning, [mbOK], 1);
+      exit;
+    end;
+  end;
+
+  dictStudent := clsUsers_u.AddStudent(sFirstname, sSurname);
+  sUsername := dictStudent.Items['Username'];
+  sID := dictStudent.Items['ID'];
+
+  AddToClass(sID, sClassID);
+
+  MessageDlg(Format('%s %s has been added with the Username: %s',
+    [sFirstname, sSurname, sUsername]), TMsgDlgType.mtInformation, [mbOK], 1);
+
+  edtAddFirstname.Clear;
+  edtAddSurname.Clear;
+  edtNewStudentTeacherFirst.Clear;
+  edtNewStudentTeacherSur.Clear;
+
+end;
+
+procedure TfrmAdmin.AddTeacher;
+var
+  sFirstname, sSurname, sUsername, sID: String;
+  bClass, bAdmin: Boolean;
+  iGrade: Integer;
+  dictTeacher: TDictionary<String, String>;
+begin
+  sFirstname := edtAddFirstname.Text;
+  sFirstname := sFirstname.Trim;
+  sSurname := edtAddSurname.Text;
+  sSurname := sSurname.Trim;
+
+  if (sFirstname = '') OR (sSurname = '') then
+  begin
+    MessageDlg('Please Enter all delails', TMsgDlgType.mtWarning, [mbOK], 1);
+    exit;
+  end;
+
+  bClass := cbxHasClass.Checked;
+  bAdmin := cbxAdmin.Checked;
+
+  if bClass then
+  begin
+    iGrade := spnGrade.Value;
+
+    if (iGrade < 8) OR (iGrade > 12) then
+    begin
+      MessageDlg('Please select a grade between 8 and 12',
+        TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 1);
+      exit;
+    end;
+  end;
+
+  dictTeacher := clsUsers_u.AddTeacher(sFirstname, sSurname, bAdmin);
+  sUsername := dictTeacher.Items['Username'];
+  sID := dictTeacher.Items['ID'];
+
+  if bClass then
+  begin
+    AddClass(sID, iGrade);
+
+    MessageDlg
+      (Format('%s %s with the username: %s , and their class has been add',
+      [sFirstname, sSurname, sUsername]), TMsgDlgType.mtInformation, [mbOK], 1);
+  end
+  else
+  begin
+    MessageDlg(Format('%s %s with the username: %s has been add',
+      [sFirstname, sSurname, sUsername]), TMsgDlgType.mtInformation, [mbOK], 1);
+  end;
+
+  edtAddFirstname.Clear;
+  edtAddSurname.Clear;
+  cbxAdmin.Checked := False;
+  cbxHasClass.Checked := False;
+
+end;
+
 procedure TfrmAdmin.bbnAddClassClick(Sender: TObject);
 var
-  sTeacherID, sFirstName, sSurname: String;
-  iGRade: Integer;
+  sTeacherID, sFirstname, sSurname: String;
+  iGrade: Integer;
 begin
-  sFirstName := edtTeacherFirstName.Text;
+  sFirstname := edtTeacherFirstName.Text;
   sSurname := edtTeacherSurname.Text;
-  iGRade := spnAddGrade.Value;
+  iGrade := spnAddGrade.Value;
   Try
-    sTeacherID := FindTeacher(sFirstName, sSurname);
+    sTeacherID := FindTeacher(sFirstname, sSurname);
   Except
     MessageDlg('There is no Teacher with that name', TMsgDlgType.mtWarning,
       [mbOK], 1);
-    Exit;
+    exit;
   End;
 
   try
     FindClass(sTeacherID);
   except
-    if MessageDlg('Are You sure you want to add a Class',
-      TMsgDlgType.mtWarning, mbYesNo, 1) = mrYes then
+    if MessageDlg('Are You sure you want to add a Class', TMsgDlgType.mtWarning,
+      mbYesNo, 1) = mrYes then
     begin
-      AddClass(sTeacherID, iGRade);
-      MessageDlg('Class was Added', TMsgDlgType.mtInformation,
-        [mbOK], 1);
+      AddClass(sTeacherID, iGrade);
+      MessageDlg('Class was Added', TMsgDlgType.mtInformation, [mbOK], 1);
     end;
-    Exit;
+    exit;
   end;
   MessageDlg('CLASS ALREADY EXISTS', TMsgDlgType.mtWarning, [mbOK], 1);
+end;
+
+procedure TfrmAdmin.bbnAddClick(Sender: TObject);
+var
+  iType: Integer;
+begin
+  iType := rgType.ItemIndex;
+
+  case iType of
+    0:
+      AddStudent;
+    1:
+      AddTeacher;
+  end;
 end;
 
 procedure TfrmAdmin.bbnAddMaterialClick(Sender: TObject);
@@ -140,29 +277,29 @@ end;
 
 procedure TfrmAdmin.bbnCloseClick(Sender: TObject);
 begin
-Close;
+  Close;
 end;
 
 procedure TfrmAdmin.bbnDeleteClick(Sender: TObject);
 var
-  sFirstName, sSurname, sStudentID: String;
+  sFirstname, sSurname, sStudentID: String;
 begin
-  sFirstName := edtFirstName.Text;
+  sFirstname := edtFirstName.Text;
   sSurname := edtSurname.Text;
 
   Try
-    sStudentID := FindStudent(sFirstName, sSurname);
+    sStudentID := FindStudent(sFirstname, sSurname);
   Except
     MessageDlg('There is no Student with that name', TMsgDlgType.mtWarning,
       [mbOK], 1);
-    Exit;
+    exit;
   End;
 
-  if MessageDlg('Are You sure you want to delete ' + sFirstName,
+  if MessageDlg('Are You sure you want to delete ' + sFirstname,
     TMsgDlgType.mtWarning, mbYesNo, 1) = mrYes then
   begin
     DeleteStudent(sStudentID);
-    MessageDlg(sFirstName + ' was Deleted', TMsgDlgType.mtInformation,
+    MessageDlg(sFirstname + ' was Deleted', TMsgDlgType.mtInformation,
       [mbOK], 1);
   end;
 
@@ -187,6 +324,21 @@ begin
   UpMaterials;
 end;
 
+procedure TfrmAdmin.bbnPassChangeClick(Sender: TObject);
+var
+  sFirstname, sSurname, sLoginID: String;
+begin
+  sFirstname := edtFirstName.Text;
+  sSurname := edtSurname.Text;
+
+  sLoginID := FindStudentLogin(sFirstname, sSurname);
+  RequestPassChange(sLoginID);
+  MessageDlg(sFirstname + ' ' + sSurname +
+    ' will be prompted to change their password when they next login',
+    TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+
+end;
+
 procedure TfrmAdmin.CloseExecute(Sender: TObject);
 begin
   Close;
@@ -194,16 +346,16 @@ end;
 
 procedure TfrmAdmin.edtFirstNameChange(Sender: TObject);
 var
-  sStudentID, sFirstName, sSurname: String;
+  sStudentID, sFirstname, sSurname: String;
 begin
-  sFirstName := edtFirstName.Text;
+  sFirstname := edtFirstName.Text;
   sSurname := edtSurname.Text;
 
   Try
-    sStudentID := FindStudent(sFirstName, sSurname);
+    sStudentID := FindStudent(sFirstname, sSurname);
   Except
     pnlStudentInfo.Caption := 'Not Student Found with that name';
-    Exit;
+    exit;
   End;
 
   pnlStudentInfo.Caption := 'Student Found'
@@ -212,16 +364,16 @@ end;
 
 procedure TfrmAdmin.edtTeacherFirstNameChange(Sender: TObject);
 var
-  sTeacherID, sFirstName, sSurname: String;
+  sTeacherID, sFirstname, sSurname: String;
 begin
-  sFirstName := edtTeacherFirstName.Text;
+  sFirstname := edtTeacherFirstName.Text;
   sSurname := edtTeacherSurname.Text;
 
   Try
-    sTeacherID := FindTeacher(sFirstName, sSurname);
+    sTeacherID := FindTeacher(sFirstname, sSurname);
   Except
     pnlTeacherSummary.Caption := 'Not Teacher Found with that name';
-    Exit;
+    exit;
   End;
 
   pnlTeacherSummary.Caption := 'Teacher Found'
@@ -236,8 +388,11 @@ procedure TfrmAdmin.NewStudent;
 begin
 
   // Clear the panel
-  RemoveDynamics;
-
+  // RemoveDynamics;
+  cbxAdmin.free;
+  cbxHasClass.free;
+  spnGrade.free;
+  lblGrade.free;
   // The dynamic objects for Adding a student
   edtNewStudentTeacherSur := TEdit.Create(pnlAddOtherInfo.Owner);
   with edtNewStudentTeacherSur do
@@ -280,6 +435,7 @@ begin
     Margins.Right := 10;
     Margins.Bottom := 10;
     AlignWithMargins := True;
+    Cursor := crHandPoint;
 
     Caption := 'Search for Teacher';
     Visible := True;
@@ -291,7 +447,10 @@ end;
 procedure TfrmAdmin.NewTeacher;
 begin
   // Clear the panel
-  RemoveDynamics;
+  // RemoveDynamics;
+  edtNewStudentTeacherFirst.free;
+  edtNewStudentTeacherSur.free;
+  bbnNewStudentSearchTeacher.free;
 
   // Add dynamic objects
   cbxAdmin := TCheckBox.Create(pnlAddOtherInfo.Owner);
@@ -306,6 +465,7 @@ begin
       Right := 10;
       Bottom := 10;
     end;
+    Cursor := crHandPoint;
     AlignWithMargins := True;
     Checked := False;
     Caption := 'Is Admin';
@@ -324,6 +484,7 @@ begin
       Right := 10;
       Bottom := 10;
     end;
+    Cursor := crHandPoint;
     AlignWithMargins := True;
     Checked := False;
     Caption := 'Has A Class';
@@ -373,43 +534,16 @@ end;
 procedure TfrmAdmin.RemoveDynamics;
 begin
   // Student dynamics
-  try
-    edtNewStudentTeacherFirst.Destroy;
-  except
-    //
-  end;
-  try
-    edtNewStudentTeacherSur.Destroy;
-  except
-    //
-  end;
-  try
-    bbnNewStudentSearchTeacher.Destroy;
-  except
-    //
-  end;
+  edtNewStudentTeacherFirst.free;
+  edtNewStudentTeacherSur.free;
+  bbnNewStudentSearchTeacher.free;
 
   // Teacher Dynamics
-  try
-    cbxAdmin.Destroy;
-  except
-    //
-  end;
-  try
-    cbxHasClass.Destroy;
-  except
-    //
-  end;
-  try
-    spnGrade.Destroy;
-  except
-    //
-  end;
-  try
-    lblGrade.Destroy;
-  except
-    //
-  end;
+  cbxAdmin.free;
+  cbxHasClass.free;
+  spnGrade.free;
+  lblGrade.free;
+
 end;
 
 procedure TfrmAdmin.rgTypeClick(Sender: TObject);

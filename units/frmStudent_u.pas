@@ -39,6 +39,7 @@ uses frmStart_u;
 
 procedure TfrmStudent.bbnLogoutClick(Sender: TObject);
 begin
+  LogOut;
   Close;
 end;
 

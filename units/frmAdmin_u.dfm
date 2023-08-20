@@ -3,7 +3,7 @@ object frmAdmin: TfrmAdmin
   Top = 0
   Caption = 'frmAdmin'
   ClientHeight = 491
-  ClientWidth = 628
+  ClientWidth = 638
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -20,7 +20,7 @@ object frmAdmin: TfrmAdmin
     Height = 485
     Align = alLeft
     TabOrder = 0
-    ExplicitHeight = 528
+    ExplicitHeight = 484
     object pcUsers: TPageControl
       AlignWithMargins = True
       Left = 11
@@ -34,7 +34,7 @@ object frmAdmin: TfrmAdmin
       ActivePage = tsAddUser
       Align = alClient
       TabOrder = 0
-      ExplicitHeight = 413
+      ExplicitHeight = 462
       object tsStudents: TTabSheet
         AlignWithMargins = True
         Caption = 'Students'
@@ -129,6 +129,7 @@ object frmAdmin: TfrmAdmin
             Caption = '&Password Change'
             TabOrder = 1
             WordWrap = True
+            OnClick = bbnPassChangeClick
           end
         end
       end
@@ -193,6 +194,7 @@ object frmAdmin: TfrmAdmin
           Top = 368
           Width = 115
           Height = 49
+          Cursor = crHandPoint
           Caption = '&Password Change'
           TabOrder = 1
           WordWrap = True
@@ -202,6 +204,7 @@ object frmAdmin: TfrmAdmin
           Top = 368
           Width = 121
           Height = 49
+          Cursor = crHandPoint
           Caption = 'Create Class'
           TabOrder = 2
           OnClick = bbnAddClassClick
@@ -261,7 +264,7 @@ object frmAdmin: TfrmAdmin
             Left = 11
             Top = 103
             Width = 276
-            Height = 74
+            Height = 73
             Margins.Left = 10
             Margins.Top = 10
             Margins.Right = 10
@@ -289,29 +292,24 @@ object frmAdmin: TfrmAdmin
           Top = 391
           Width = 125
           Height = 35
-          Caption = 'Add New User'
+          Cursor = crHandPoint
+          Caption = 'Add &New User'
           TabOrder = 2
-        end
-        object bbnRetry: TBitBtn
-          Left = 3
-          Top = 391
-          Width = 118
-          Height = 35
-          Kind = bkRetry
-          NumGlyphs = 2
-          TabOrder = 3
+          OnClick = bbnAddClick
         end
       end
     end
   end
   object pnlMaterials: TPanel
     AlignWithMargins = True
-    Left = 343
+    Left = 353
     Top = 3
     Width = 282
     Height = 485
     Align = alRight
     TabOrder = 1
+    ExplicitLeft = 349
+    ExplicitHeight = 484
     object lbMaterials: TListBox
       AlignWithMargins = True
       Left = 11
@@ -331,6 +329,7 @@ object frmAdmin: TfrmAdmin
       Top = 166
       Width = 111
       Height = 54
+      Cursor = crHandPoint
       Caption = 'Delete &Material'
       TabOrder = 1
       WordWrap = True
@@ -341,6 +340,7 @@ object frmAdmin: TfrmAdmin
       Top = 166
       Width = 121
       Height = 54
+      Cursor = crHandPoint
       Caption = '&Add Material'
       TabOrder = 2
       WordWrap = True
@@ -351,7 +351,9 @@ object frmAdmin: TfrmAdmin
       Top = 429
       Width = 99
       Height = 35
-      Caption = '&Close'
+      Cursor = crHandPoint
+      Kind = bkClose
+      NumGlyphs = 2
       TabOrder = 3
       OnClick = bbnCloseClick
     end

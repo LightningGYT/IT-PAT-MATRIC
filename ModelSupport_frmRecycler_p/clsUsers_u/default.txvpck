@@ -79,6 +79,11 @@
       <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.AddStudent(System.string,System.string)" />
       <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.AddTeacher(System.string,System.string,System.string)" />
       <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.AddLogin(System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.Encrypt(System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.Decrypt(System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.SaveLogin(System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.CheckPrev()" />
+      <reference referencedUin="delphi:e_method:src:frmRecycler_p:clsUsers_u.@unitclass.LogOut()" />
     </reference>
     <reference referencedUin="delphi:e_class:src:frmRecycler_p:clsUsers_u.TClass">
       <property name="$shortcutReference" value="true" />

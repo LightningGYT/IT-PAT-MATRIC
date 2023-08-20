@@ -54,31 +54,36 @@ implementation
 uses frmLogin_u, dmRecycle_u, frmTeacher_u, frmStudent_u, frmRecycler_u,
   frmAdmin_u;
 
-//DEBUG ONLY
+// DEBUG ONLY
 procedure TfrmStart.StudentExecute(Sender: TObject);
 begin
   frmStudent.ShowModal;
 end;
-//DEBUG ONLY
+
+// DEBUG ONLY
 procedure TfrmStart.TeacherExecute(Sender: TObject);
 begin
   frmTeacher.ShowModal;
 end;
-//DEBUG ONLY
+
+// DEBUG ONLY
 procedure TfrmStart.RecycleExecute(Sender: TObject);
 begin
-frmRecycle.ShowModal;
+  frmRecycle.ShowModal;
 end;
 
 // DEBUG ONLY
 procedure TfrmStart.AdminExecute(Sender: TObject);
 begin
-frmAdmin.ShowModal;
+  frmAdmin.ShowModal;
 end;
 
 procedure TfrmStart.bbnLoginClick(Sender: TObject);
 begin
-  frmLogin.ShowModal;
+  if not CheckPrev then
+  begin
+    frmLogin.ShowModal;
+  end;
 end;
 
 procedure TfrmStart.FormShow(Sender: TObject);
@@ -88,7 +93,6 @@ var
   key: String;
   month: integer;
 begin
-
   // Adding The MAterial counts to the graph
   objRecycle := TRecycler.Create;
   Materials := objRecycle.GetMaterials;

@@ -2,32 +2,42 @@ object frmStudent: TfrmStudent
   Left = 0
   Top = 0
   Caption = 'Student'
-  ClientHeight = 418
-  ClientWidth = 622
+  ClientHeight = 523
+  ClientWidth = 785
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
-  Font.Height = -15
+  Font.Height = -19
   Font.Name = 'Consolas'
   Font.Style = []
   Position = poDesigned
   OnClose = FormClose
   OnShow = FormShow
-  TextHeight = 18
+  PixelsPerInch = 120
+  TextHeight = 22
   object pnlStats: TPanel
     AlignWithMargins = True
-    Left = 3
-    Top = 3
-    Width = 406
-    Height = 412
+    Left = 4
+    Top = 4
+    Width = 507
+    Height = 515
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alLeft
     TabOrder = 0
+    ExplicitHeight = 514
     object cStats: TChart
       AlignWithMargins = True
-      Left = 4
-      Top = 4
-      Width = 398
-      Height = 405
+      Left = 5
+      Top = 5
+      Width = 497
+      Height = 505
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Title.Text.Strings = (
         'Recycled')
       Panning.MouseWheel = pmwNone
@@ -39,7 +49,7 @@ object frmStudent: TfrmStudent
       Zoom.Allow = False
       Align = alClient
       TabOrder = 0
-      ExplicitHeight = 404
+      ExplicitHeight = 504
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 13
       object sRecycled: TPieSeries
@@ -73,51 +83,65 @@ object frmStudent: TfrmStudent
   end
   object pnlControl: TPanel
     AlignWithMargins = True
-    Left = 415
-    Top = 3
-    Width = 205
-    Height = 412
+    Left = 519
+    Top = 4
+    Width = 256
+    Height = 515
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alLeft
     TabOrder = 1
+    ExplicitHeight = 514
     object lblWelcome: TLabel
       AlignWithMargins = True
-      Left = 4
-      Top = 4
-      Width = 98
-      Height = 31
+      Left = 5
+      Top = 5
+      Width = 246
+      Height = 38
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Align = alTop
       Alignment = taCenter
       Caption = 'Welcome'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -26
+      Font.Height = -33
       Font.Name = 'Consolas'
       Font.Style = []
       ParentFont = False
+      ExplicitWidth = 126
     end
     object bbnLogout: TBitBtn
       AlignWithMargins = True
-      Left = 11
-      Top = 361
-      Width = 183
-      Height = 41
+      Left = 14
+      Top = 449
+      Width = 228
+      Height = 52
       Cursor = crHandPoint
-      Margins.Left = 10
-      Margins.Top = 10
-      Margins.Right = 10
-      Margins.Bottom = 10
+      Margins.Left = 13
+      Margins.Top = 13
+      Margins.Right = 13
+      Margins.Bottom = 13
       Align = alBottom
       Caption = '&Logout'
       TabOrder = 0
       OnClick = bbnLogoutClick
-      ExplicitTop = 360
+      ExplicitTop = 448
     end
     object redStudentSumary: TRichEdit
       AlignWithMargins = True
-      Left = 4
-      Top = 41
-      Width = 197
-      Height = 296
+      Left = 5
+      Top = 51
+      Width = 246
+      Height = 370
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Align = alTop
       TabOrder = 1
     end

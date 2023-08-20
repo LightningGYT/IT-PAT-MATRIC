@@ -3,8 +3,8 @@ object frmStart: TfrmStart
   Top = 0
   AutoSize = True
   Caption = 'Recycler'
-  ClientHeight = 506
-  ClientWidth = 612
+  ClientHeight = 512
+  ClientWidth = 616
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -19,14 +19,13 @@ object frmStart: TfrmStart
     Left = 3
     Top = 3
     Width = 369
-    Height = 500
+    Height = 506
     Align = alLeft
     Padding.Left = 3
     Padding.Top = 3
     Padding.Right = 3
     Padding.Bottom = 3
     TabOrder = 0
-    ExplicitHeight = 499
     object cStats: TChart
       AlignWithMargins = True
       Left = 7
@@ -124,14 +123,13 @@ object frmStart: TfrmStart
     Left = 378
     Top = 3
     Width = 231
-    Height = 500
+    Height = 506
     Align = alLeft
     Padding.Left = 3
     Padding.Top = 3
     Padding.Right = 3
     Padding.Bottom = 3
     TabOrder = 1
-    ExplicitHeight = 499
     object lblWelcom: TLabel
       AlignWithMargins = True
       Left = 14
@@ -147,16 +145,16 @@ object frmStart: TfrmStart
       Caption = 'Welcome'
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -27
-      Font.Name = 'Consolas'
+      Font.Height = -26
+      Font.Name = 'Quartz MS'
       Font.Style = []
       ParentFont = False
-      ExplicitWidth = 105
+      ExplicitWidth = 127
     end
     object bbnClose: TBitBtn
       AlignWithMargins = True
       Left = 14
-      Top = 449
+      Top = 455
       Width = 203
       Height = 37
       Cursor = crHandPoint
@@ -170,12 +168,11 @@ object frmStart: TfrmStart
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
-      ExplicitTop = 448
     end
     object bbnLogin: TBitBtn
       AlignWithMargins = True
       Left = 14
-      Top = 400
+      Top = 406
       Width = 203
       Height = 36
       Cursor = crHandPoint
@@ -193,7 +190,6 @@ object frmStart: TfrmStart
       ShowHint = True
       TabOrder = 1
       OnClick = bbnLoginClick
-      ExplicitTop = 399
     end
   end
   object DEBUGINGREMOVE: TActionList

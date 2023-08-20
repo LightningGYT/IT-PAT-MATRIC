@@ -5,7 +5,7 @@ object frmLogin: TfrmLogin
   Anchors = [akLeft, akTop, akRight, akBottom]
   Caption = 'Login'
   ClientHeight = 442
-  ClientWidth = 335
+  ClientWidth = 344
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -78,7 +78,7 @@ object frmLogin: TfrmLogin
     AlignWithMargins = True
     Left = 3
     Top = 88
-    Width = 329
+    Width = 338
     Height = 351
     Align = alBottom
     Padding.Left = 5
@@ -87,12 +87,12 @@ object frmLogin: TfrmLogin
     Padding.Bottom = 5
     TabOrder = 0
     ExplicitTop = 87
-    ExplicitWidth = 325
+    ExplicitWidth = 334
     object bbnCancel: TBitBtn
       AlignWithMargins = True
       Left = 16
       Top = 295
-      Width = 297
+      Width = 306
       Height = 40
       Cursor = crHandPoint
       Margins.Left = 10
@@ -104,13 +104,13 @@ object frmLogin: TfrmLogin
       Kind = bkCancel
       NumGlyphs = 2
       TabOrder = 4
-      ExplicitWidth = 293
+      ExplicitWidth = 302
     end
     object bbnLogin: TBitBtn
       AlignWithMargins = True
       Left = 16
       Top = 235
-      Width = 297
+      Width = 306
       Height = 40
       Cursor = crHandPoint
       Margins.Left = 10
@@ -121,13 +121,13 @@ object frmLogin: TfrmLogin
       Caption = '&Login'
       TabOrder = 3
       OnClick = bbnLoginClick
-      ExplicitWidth = 293
+      ExplicitWidth = 302
     end
     object cbxPassViss: TCheckBox
       AlignWithMargins = True
       Left = 16
       Top = 203
-      Width = 297
+      Width = 306
       Height = 19
       Cursor = crHandPoint
       Margins.Left = 10
@@ -139,13 +139,13 @@ object frmLogin: TfrmLogin
       TabOrder = 2
       StyleName = 'Windows'
       OnClick = cbxPassVissClick
-      ExplicitWidth = 293
+      ExplicitWidth = 302
     end
     object edtPassword: TEdit
       AlignWithMargins = True
       Left = 16
       Top = 164
-      Width = 297
+      Width = 306
       Height = 26
       Cursor = crIBeam
       Hint = 'Enter your password'
@@ -158,13 +158,13 @@ object frmLogin: TfrmLogin
       PasswordChar = '*'
       TabOrder = 1
       TextHint = 'Password'
-      ExplicitWidth = 293
+      ExplicitWidth = 302
     end
     object edtUsername: TEdit
       AlignWithMargins = True
       Left = 16
       Top = 118
-      Width = 297
+      Width = 306
       Height = 26
       Cursor = crIBeam
       Margins.Left = 10
@@ -175,7 +175,7 @@ object frmLogin: TfrmLogin
       Alignment = taCenter
       TabOrder = 0
       TextHint = 'Username'
-      ExplicitWidth = 293
+      ExplicitWidth = 302
     end
   end
 end

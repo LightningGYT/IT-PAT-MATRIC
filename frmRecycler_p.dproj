@@ -129,6 +129,10 @@
             <Form>frmAdmin</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="units\frmChangePass_u.pas">
+            <Form>frmChangePass</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="frmRecycler_p.todo"/>
         <None Include="ModelSupport_frmRecycler_p\default.txaPackage"/>
         <None Include="ModelSupport_frmRecycler_p\default.txvpck"/>
