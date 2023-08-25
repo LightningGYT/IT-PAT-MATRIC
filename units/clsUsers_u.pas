@@ -159,11 +159,11 @@ begin
     Active := False;
     SQL.Clear;
 
-    SQL.Add('UPDATE Login SET ');
-    SQL.Add('Password=' + QuotedStr(sIn));
-    SQL.Add(', Salt=' + QuotedStr(sSalt));
-    SQL.Add(', ChangePass=' + False.toString());
-    SQL.Add(' WHERE ID = ' + QuotedStr(sLoginID));
+    SQL.Text := 'UPDATE Login SET ChangePass =:CHANGEPASS , Salt =:SALT, User_Pass =:PASSWORD WHERE ID =:LOGINID';
+    Parameters.ParamByName('PASSWORD').Value := 'HI';
+    Parameters.ParamByName('SALT').Value := sSalt;
+    Parameters.ParamByName('CHANGEPASS').Value := False;
+    Parameters.ParamByName('LOGINID').Value := sLoginID;
 
     ExecSQL;
 
@@ -825,7 +825,7 @@ begin
     objUser.changePass := dmRecycle.qryRecycle.FieldByName('ChangePass')
       .AsBoolean;
 
-    sPass := dmRecycle.qryRecycle.FieldByName('Password').AsString;
+    sPass := dmRecycle.qryRecycle.FieldByName('User_Pass').AsString;
     sSalt := dmRecycle.qryRecycle.FieldByName('Salt').AsString;
 
     // making sure usernames match case sensitivty
