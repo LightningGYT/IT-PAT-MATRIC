@@ -55,6 +55,7 @@ type
     procedure bbnCloseClick(Sender: TObject);
     procedure bbnPassChangeClick(Sender: TObject);
     procedure bbnAddClick(Sender: TObject);
+    procedure bbnTeacherChangePasswordClick(Sender: TObject);
 
   private
     // Other vars
@@ -332,6 +333,21 @@ begin
   sSurname := edtSurname.Text;
 
   sLoginID := FindStudentLogin(sFirstname, sSurname);
+  RequestPassChange(sLoginID);
+  MessageDlg(sFirstname + ' ' + sSurname +
+    ' will be prompted to change their password when they next login',
+    TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+
+end;
+
+procedure TfrmAdmin.bbnTeacherChangePasswordClick(Sender: TObject);
+var
+  sFirstname, sSurname, sLoginID: String;
+begin
+  sFirstname := edtTeacherFirstName.Text;
+  sSurname := edtTeacherSurname.Text;
+
+  sLoginID := FindTeacherLogin(sFirstname, sSurname);
   RequestPassChange(sLoginID);
   MessageDlg(sFirstname + ' ' + sSurname +
     ' will be prompted to change their password when they next login',

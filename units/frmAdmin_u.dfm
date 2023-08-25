@@ -157,7 +157,7 @@ object frmAdmin: TfrmAdmin
     Height = 499
     Align = alLeft
     TabOrder = 0
-    ExplicitHeight = 484
+    ExplicitHeight = 498
     object pcUsers: TPageControl
       AlignWithMargins = True
       Left = 11
@@ -168,10 +168,10 @@ object frmAdmin: TfrmAdmin
       Margins.Top = 10
       Margins.Right = 10
       Margins.Bottom = 10
-      ActivePage = tsAddUser
+      ActivePage = tsTeacher
       Align = alClient
       TabOrder = 0
-      ExplicitHeight = 462
+      ExplicitHeight = 476
       object tsStudents: TTabSheet
         AlignWithMargins = True
         Caption = 'Students'
@@ -344,6 +344,7 @@ object frmAdmin: TfrmAdmin
           Images = frmStart.viIcons
           TabOrder = 1
           WordWrap = True
+          OnClick = bbnTeacherChangePasswordClick
         end
         object bbnAddClass: TBitBtn
           Left = 160
@@ -462,7 +463,7 @@ object frmAdmin: TfrmAdmin
     Align = alRight
     TabOrder = 1
     ExplicitLeft = 349
-    ExplicitHeight = 484
+    ExplicitHeight = 498
     object lbMaterials: TListBox
       AlignWithMargins = True
       Left = 11

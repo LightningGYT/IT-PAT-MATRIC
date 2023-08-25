@@ -3,7 +3,7 @@ object frmStart: TfrmStart
   Top = 270
   AutoSize = True
   Caption = 'Recycler'
-  ClientHeight = 514
+  ClientHeight = 515
   ClientWidth = 616
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
@@ -154,7 +154,7 @@ object frmStart: TfrmStart
     Left = 3
     Top = 3
     Width = 369
-    Height = 508
+    Height = 509
     Align = alLeft
     Padding.Left = 3
     Padding.Top = 3
@@ -258,7 +258,7 @@ object frmStart: TfrmStart
     Left = 378
     Top = 3
     Width = 231
-    Height = 508
+    Height = 509
     Align = alLeft
     Padding.Left = 3
     Padding.Top = 3
@@ -289,7 +289,7 @@ object frmStart: TfrmStart
     object bbnClose: TBitBtn
       AlignWithMargins = True
       Left = 14
-      Top = 457
+      Top = 458
       Width = 203
       Height = 37
       Cursor = crHandPoint
@@ -307,7 +307,7 @@ object frmStart: TfrmStart
     object bbnLogin: TBitBtn
       AlignWithMargins = True
       Left = 14
-      Top = 408
+      Top = 409
       Width = 203
       Height = 36
       Cursor = crHandPoint
